@@ -280,6 +280,1062 @@ cat &gt; &quot;$dir/config.json&quot; &lt;&lt;JSON
 JSON
 echo &quot;Saved to $dir/config.json&quot; &gt;&amp;2
 </code></pre></details>
+</article><article class="skill" data-reveal>
+  <h2>gavel</h2>
+  <p class="skill__text">Puts a decision on trial. A defense and a prosecution argue it, 3 to 8 specialist jurors vote alone without seeing each other, and a judge who commits to his own view first rules on the evidence. Setup picks the opposition&#x27;s harshness, the jury, and each role&#x27;s model. Use when the user says use gavel, gavel this, put it on trial, should we do X.</p>
+  <h3>Install</h3>
+  <div class="install"><code>git clone https://github.com/gbmurad/claude-skills.git &amp;&amp; cd claude-skills &amp;&amp; sh install.sh gavel</code><button class="copy" type="button" data-copy="git clone https://github.com/gbmurad/claude-skills.git &amp;&amp; cd claude-skills &amp;&amp; sh install.sh gavel">Copy</button></div>
+  <p class="skill__links"><a class="button" href="https://github.com/gbmurad/claude-skills/archive/refs/heads/main.zip" rel="noopener">Download ZIP</a>
+  <a class="link" href="https://github.com/gbmurad/claude-skills/tree/main/skills/gavel" rel="noopener">View on GitHub <span class="arr" aria-hidden="true">&rarr;</span></a></p>
+  <div class="skill__readme"><p><b>Put a decision on trial and get a ruling you can act on.</b></p>
+<p>Gavel is a <a href="https://claude.com/claude-code" rel="noopener">Claude Code</a> skill that turns a hard question (&quot;should we rebuild the app?&quot;, &quot;should I take this deal?&quot;, &quot;should the store offer free shipping?&quot;) into a structured trial. A defense argues for it. A prosecution argues against it and has to name a better plan. A jury of 3 to 8 specialists, each with a different lens, votes alone without seeing the others. Then a judge, who wrote down his own view before hearing a word, weighs the evidence and rules.</p>
+<p>You get one of five verdicts (Adopt, Adopt with conditions, Redesign, Reject, Insufficient evidence), the reasons, the strongest dissent, and the one fact that would flip the ruling.</p>
+<pre class="skill-code"><code>you: use gavel for this: should we move the store to a subscription model?</code></pre>
+<h3>Why a trial</h3>
+<p>Ask one chatbot whether your idea is good and it tends to agree with you. Ask a panel of them to discuss it and they tend to agree with each other: research on debates between language models finds they drop correct answers just to reach consensus. Neither gives you what a hard decision needs, which is the strongest case on both sides, judged by someone who is not trying to please anyone.</p>
+<p>A courtroom is an old answer to that problem. Gavel keeps the parts of it that are backed by research and drops the theater. Every rule below exists because a study found that groups, juries or panels of models go wrong without it (see <a href="https://github.com/gbmurad/claude-skills/blob/main/skills/gavel/#the-rules-that-keep-it-honest" rel="noopener">Why each rule exists</a>).</p>
+<h3>What happens when you run it</h3>
+<pre class="skill-code"><code> Setup         you pick the question, how hard the prosecution pushes, the jury, and each role&#x27;s model
+   │
+ Filing        the clerk writes the case file: facts with sources, constraints, stakes
+   │
+ Pretrial      the judge sharpens the question, lists competing explanations, sets the criteria and
+   │           the standard of proof, seats the jury, and seals his own first opinion
+   │
+ Openings      defense and prosecution write their cases at the same time, blind to each other
+   │
+ Rebuttals     each answers the other&#x27;s strongest points (skipped in a quick trial)
+   │
+ Record        a script assembles the record, checks word limits, and puts the sides in random order
+   │
+ Jury          every juror reads the record and votes alone, in parallel, never seeing another ballot
+   │
+ Tally         a script checks every ballot and computes the vote, the spread and the minority report
+   │
+ Ruling        the judge returns fresh, opens his sealed opinion, weighs the evidence, and rules</code></pre>
+<p>Each role is a separate Claude subagent with a clean memory, so nobody can be swayed by what they were not supposed to see. The main conversation acts as the <b>clerk</b>: it runs the setup, passes files between roles, and reports the ruling, but it never argues, votes or edits anything a role wrote.</p>
+<h3>The setup</h3>
+<p>When you say &quot;use Gavel for this&quot;, the skill asks a few questions with tap to choose menus.</p>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Question</th><th scope="col">Choices</th><th scope="col">Default</th></tr></thead><tbody><tr><td>The question</td><td>You type it in one sentence</td><td></td></tr><tr><td>How hard should the prosecution push?</td><td>Fair · Tough · Ruthless</td><td>Tough</td></tr><tr><td>Who sits on the jury?</td><td>The judge picks · I&#x27;ll choose the seats · Quick trial (3 seats, no rebuttals)</td><td>Judge picks 5</td></tr><tr><td>Model for the judge</td><td>Opus · Fable · Sonnet · Same as this chat</td><td>Opus</td></tr><tr><td>Model for the defense</td><td>Sonnet · Opus · Fable · Haiku</td><td>Sonnet</td></tr><tr><td>Model for the prosecution</td><td>Sonnet · Opus · Fable · Haiku</td><td>Sonnet</td></tr><tr><td>Default model for the jury</td><td>Sonnet · Haiku · Opus · Fable</td><td>Sonnet</td></tr></tbody></table></div>
+<p>If you choose the seats, you pick from the bench below or type anyone you like, such as &quot;a retired airline pilot&quot; or &quot;my most demanding customer&quot;. Any seat can get its own model by adding it after a colon, like <code>designer: opus</code>. The premortem seat always sits.</p>
+<p>Gavel remembers your last setup. Next time, say &quot;use my last settings&quot; and it skips the menus.</p>
+<h3>The courtroom, role by role</h3>
+<p>### The judge There is one judge, and he sits twice: once before the trial and once to rule. Only the second sitting decides, so two judges can never disagree. Each sitting is a fresh subagent on the model you chose (Opus by default, because the ruling is the product); research found a judge brought in fresh at the end resists the biases that build up over a long debate better than one who sat through every round.</p>
+<p><b>Pretrial.</b> Before any argument, the judge reads only the case file and: 1. Sharpens your question into one testable motion (&quot;Resolved: the store should move to a subscription model&quot;). 2. Writes 3 to 5 competing explanations of what is true, including the motion, a rival plan or doing nothing,    and one nobody has raised yet. 3. Sets 2 to 4 weighted criteria the decision should turn on (cost, risk, customer value, and so on). 4. Seats the jury: your chosen seats, or the specialists this case needs, each with its own question. 5. Sets the standard of proof (below). 6. Writes a <b>sealed prior</b>: his honest opinion and a probability, before hearing anyone. Nobody else reads it.</p>
+<p><b>Ruling.</b> The judge comes back with a fresh memory, opens his own sealed prior, reads the record and the jury&#x27;s ballots, and rules. He must show how far the trial moved him from his first opinion. He may overrule the jury, but only by explaining why in writing, and the jury&#x27;s vote is printed under his ruling either way.</p>
+<p>### The defense Argues for the motion in at most 500 words, then a 250 word rebuttal. Every claim is numbered (F1, F2) and tagged with its support: <code>[case]</code> with a quote from the case file, <code>[source]</code> with a named source, or <code>[assumption]</code> said plainly. Jurors give unsupported claims no weight.</p>
+<p>### The prosecution Argues against the motion under the same limits and tagging (claims A1, A2). The prosecution is not allowed to just pick holes. It has to name the rival it would choose instead (another plan, or doing nothing) and lay out the most likely way the motion fails, step by step. You choose how hard it pushes:</p>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Level</th><th scope="col">What it does</th></tr></thead><tbody><tr><td>Fair</td><td>Builds the strongest honest case against and concedes openly what the defense will get right</td></tr><tr><td>Tough</td><td>Presses hard on the real weak points and concedes nothing the record does not prove</td></tr><tr><td>Ruthless</td><td>Assumes the motion fails and shows exactly how, attacking every claim it rests on</td></tr></tbody></table></div>
+<p>At every level an attack without support counts for nothing with the jury. Ruthless means rigor, not rudeness.</p>
+<p>### The jury 3 to 8 jurors, each a separate subagent. Every juror reads the record and nothing else, then works in a fixed order: <b>facts first, vote last.</b> 1. Up to six findings, each tied to a claim id, graded <code>verified</code>, <code>plausible</code> or <code>assumption</code>, and marked for    or against the motion. 2. A score from 1 to 5 on each of the judge&#x27;s criteria. 3. Only then a vote: the verdict, a probability from 0 to 100 that adopting the motion is right, and a    confidence level. 4. The decisive point, what would change their mind, and any conditions.</p>
+<p>Jurors may also object that the question itself is badly framed.</p>
+<p><b>The bench</b> (the judge picks from these, or invents a seat; you can type anyone):</p>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Seat</th><th scope="col">The question it owns</th></tr></thead><tbody><tr><td>premortem (always)</td><td>It is a year from now and this failed. What were the three most likely reasons?</td></tr><tr><td>engineer</td><td>Can this be built and run as described? What breaks first?</td></tr><tr><td>designer</td><td>Will the people it is for understand it and use it without help?</td></tr><tr><td>finance</td><td>What does it cost in total, what does it return, and when does it pay back?</td></tr><tr><td>customer</td><td>Would I pay for it or change what I do for it?</td></tr><tr><td>operations</td><td>Who runs this every day, and what does it add to their load?</td></tr><tr><td>security and privacy</td><td>What could leak, be abused, or put someone at risk?</td></tr><tr><td>legal and compliance</td><td>Which rule, contract or policy does this touch?</td></tr><tr><td>data</td><td>Does the evidence in the record actually show what it claims?</td></tr><tr><td>competitor</td><td>If I were the strongest rival, how would I answer this, and how fast?</td></tr><tr><td>domain expert</td><td>What does someone who has done this for ten years know that the record misses?</td></tr><tr><td>ethicist</td><td>Who is affected who is not in the room, and is that fair to them?</td></tr><tr><td>skeptical investor</td><td>Why now, and what has to go right that nobody has proven?</td></tr><tr><td>first time user</td><td>Coming in cold, where do I get stuck?</td></tr><tr><td>maintainer</td><td>In two years, who keeps this alive, and what does it cost to change?</td></tr></tbody></table></div>
+<p>### Deliberation (optional) With <code>--deliberate</code>, jurors get one look at the other ballots, shown as Juror A, B, C in random order, and may revise once. Anyone who changes their verdict, or moves more than 15 points, must name the new point that moved them. If most changes name nothing new, or everyone simply drifts toward the majority, the script throws the second round out and the judge gets the blind vote instead.</p>
+<h3>The verdict</h3>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Verdict</th><th scope="col">Means</th></tr></thead><tbody><tr><td>Adopt</td><td>Do it as stated</td></tr><tr><td>Adopt with conditions</td><td>Do it, provided the listed conditions are met</td></tr><tr><td>Redesign</td><td>The goal is right, the plan is not; rework it</td></tr><tr><td>Reject</td><td>Do not do it; the rival plan or doing nothing is better</td></tr><tr><td>Insufficient evidence</td><td>The record cannot support a decision yet; here is what to find out</td></tr></tbody></table></div>
+<p><b>Standard of proof.</b> The burden is always on the defense: the idea has to earn its adoption. The judge sets the bar by how hard the decision is to undo. Cheap to reverse: *more likely than not*. Costly or hard to undo: *clear and convincing*.</p>
+<p>The ruling file always has the same sections: the verdict line, the ruling in plain words, how far the judge moved from his sealed prior, the decisive evidence, the strongest dissent stated fairly, conditions, the one fact that would flip the ruling, two or three things to watch, and the vote.</p>
+<h3>The rules that keep it honest</h3>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Rule</th><th scope="col">What it prevents</th><th scope="col">Research</th></tr></thead><tbody><tr><td>Jurors vote alone before seeing anyone</td><td>Agents abandon correct answers to agree; social influence narrows opinions without making them more accurate</td><td>Wynn et al. 2025, <a href="https://arxiv.org/abs/2509.05396" rel="noopener">arXiv 2509.05396</a>; Lorenz et al. 2011, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3107299" rel="noopener">PNAS</a></td></tr><tr><td>Second round is optional, anonymized, and dropped if moves name no new point</td><td>Sycophancy toward peers is far more common than self bias</td><td>Choi et al. 2025, <a href="https://arxiv.org/abs/2510.07517" rel="noopener">arXiv 2510.07517</a>; <a href="https://arxiv.org/abs/2604.02668" rel="noopener">arXiv 2604.02668</a></td></tr><tr><td>At most two rounds of argument</td><td>Judge biases rise sharply after the first round</td><td>Ma et al. 2025, <a href="https://arxiv.org/abs/2505.19477" rel="noopener">arXiv 2505.19477</a></td></tr><tr><td>Equal word limits, sides in random order</td><td>Judges favor longer answers and the first or last speaker</td><td>Khan et al. 2024, <a href="https://arxiv.org/abs/2402.06782" rel="noopener">arXiv 2402.06782</a></td></tr><tr><td>Always two sides</td><td>Debate beat a lone advocate on every task tested, and lifted weak judges from 48% to 76% accuracy</td><td>Kenton et al. 2024, <a href="https://arxiv.org/abs/2407.04622" rel="noopener">arXiv 2407.04622</a>; Khan et al. 2024</td></tr><tr><td>The prosecution must argue a real rival</td><td>Assigned devil&#x27;s advocacy is weaker than real dissent</td><td>Nemeth, Brown, Rogers 2001; Schweiger, Sandberg, Ragan 1986</td></tr><tr><td>Judge seals his own view and lists competing explanations first</td><td>Anchoring on the first strong speaker</td><td>Heuer, *Psychology of Intelligence Analysis* (Analysis of Competing Hypotheses); Kahneman, Sibony, Lovallo (Mediating Assessments Protocol)</td></tr><tr><td>A premortem seat on every jury</td><td>Doubters stay quiet when a plan has momentum</td><td>Klein 2007, *Performing a Project Premortem*, HBR</td></tr><tr><td>Facts before votes, every finding graded</td><td>Juries that vote first cover less of the evidence</td><td>Hastie, Penrod, Pennington 1983, *Inside the Jury*</td></tr><tr><td>Evidence over headcount; the minority is always reported</td><td>Jurors on one model share blind spots; in about one in four split cases the minority was right</td><td>He et al. 2026, <a href="https://arxiv.org/abs/2606.29270" rel="noopener">arXiv 2606.29270</a></td></tr><tr><td>Probability and confidence per juror</td><td>A bare yes or no loses how sure each juror is</td><td>Mellers et al. 2014; Satopää et al. 2014</td></tr><tr><td>Checkable questions are sent elsewhere</td><td>On questions with a right answer, a simple vote explains most of the gain from debate</td><td>Choi et al. 2025, *Debate or Vote*, <a href="https://arxiv.org/abs/2508.17536" rel="noopener">arXiv 2508.17536</a></td></tr></tbody></table></div>
+<h3>The script that keeps it fair</h3>
+<p>The steps that should never depend on judgment are done by <code>scripts/gavel.py</code>, plain Python with no dependencies:</p>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>gavel.py new &quot;&lt;question&gt;&quot; [flags]</code></td><td>Checks the setup, opens the case folder, saves your settings, prints the plan</td></tr><tr><td><code>gavel.py settings</code></td><td>Shows your last setup</td></tr><tr><td><code>gavel.py pretrial CASE</code></td><td>Checks the judge&#x27;s pretrial plan, including that he seated exactly the jury you chose</td></tr><tr><td><code>gavel.py record CASE</code></td><td>Refuses speeches over the word limit, randomizes which side appears first, never includes the sealed prior</td></tr><tr><td><code>gavel.py tally CASE</code></td><td>Checks every ballot, computes the median and spread, flags a strong minority, audits second round changes, and shuffles the ballots under letters for the judge</td></tr><tr><td><code>gavel.py close CASE</code></td><td>Refuses a ruling that is missing its verdict line or any section, then adds it to the docket</td></tr><tr><td><code>gavel.py list</code></td><td>Every past case and its verdict</td></tr></tbody></table></div>
+<p><code>scripts/test_gavel.py</code> holds 27 tests, including deliberately broken ballots, speeches over the limit, a herding second round, and a leaked sealed prior. Run them with <code>python3 scripts/test_gavel.py</code>.</p>
+<p>Every case lives in its own folder under <code>.gavel/</code> in your project:</p>
+<pre class="skill-code"><code>.gavel/2026-10-09-should-we-move-the-store-to-a-subscription/
+  setup.json          your choices
+  case.md             the facts
+  pretrial.json       the judge&#x27;s motion, explanations, criteria and jury
+  sealed-prior.md     the judge&#x27;s first opinion (only the judge reads it)
+  opening-for.md      opening-against.md
+  rebuttal-for.md     rebuttal-against.md
+  record.md           what the jury reads
+  ballots/round1/     one file per juror
+  tally.json          the vote
+  jury-packet.md      the ballots as the judge sees them
+  ruling.md           the ruling</code></pre>
+<p>Case files can hold private details, so add <code>.gavel/</code> to your <code>.gitignore</code>.</p>
+<h3>Options</h3>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Option</th><th scope="col">Effect</th></tr></thead><tbody><tr><td><code>--last</code></td><td>Reuse your last setup</td></tr><tr><td><code>--quick</code></td><td>3 jurors and no rebuttals</td></tr><tr><td><code>--deliberate</code></td><td>One anonymized second round for the jury, with the herding check</td></tr><tr><td><code>--research</code></td><td>Both sides may search the web; every web claim needs its link</td></tr></tbody></table></div>
+<h3>Cost</h3>
+<p>A trial is a lot of agent runs, so it is meant for real decisions, not quick questions.</p>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Trial</th><th scope="col">Runs</th></tr></thead><tbody><tr><td>Quick</td><td>2 judge + 2 speeches + 3 jurors = 7</td></tr><tr><td>Standard</td><td>2 judge + 4 speeches + 5 jurors = 11</td></tr><tr><td>Standard with deliberation</td><td>16</td></tr></tbody></table></div>
+<p>Cheaper models for the jury (Haiku) cut most of the cost. The judge is the one seat worth paying for.</p>
+<h3>Limits, honestly</h3>
+<ul><li>Every juror is a Claude model, so they share blind spots. Mixing models helps a little; it does not make</li></ul>
+<p>  them independent. The ruling says how varied the jury was.</p>
+<ul><li>No study has tested a full courtroom like this one. Each rule is grounded in research; the whole is a design.</li><li>Nothing makes a judge immune to a persuasive argument. Word limits, random order, a sealed prior and graded</li></ul>
+<p>  evidence reduce the known biases; they do not remove them.</p>
+<ul><li>For a question with a right answer (a bug, a fact, a calculation), a trial is the wrong tool. Gavel says so.</li></ul>
+<h3>Files</h3>
+<div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">File</th><th scope="col">What it is</th></tr></thead><tbody><tr><td><code>SKILL.md</code></td><td>The clerk&#x27;s procedure Claude follows</td></tr><tr><td><code>references/roles.md</code></td><td>The exact brief each role receives</td></tr><tr><td><code>references/bench.md</code></td><td>The juror seats and their questions</td></tr><tr><td><code>references/research.md</code></td><td>The evidence behind each rule</td></tr><tr><td><code>scripts/gavel.py</code></td><td>Case folders, word limits, ballot checks, the tally, the docket</td></tr><tr><td><code>scripts/test_gavel.py</code></td><td>The tests</td></tr></tbody></table></div></div>
+  <h3>How it is made</h3>
+  <p class="skill__count">3 files, 962 lines in all. Every one is below.</p>
+  <details class="skill__fold" open><summary>Show SKILL.md</summary><pre class="skill-code" tabindex="0"><code>---
+name: gavel
+description: Puts a decision on trial. A defense and a prosecution argue it, 3 to 8 specialist jurors vote alone without seeing each other, and a judge who commits to his own view first rules on the evidence. Setup picks the opposition&#x27;s harshness, the jury, and each role&#x27;s model. Use when the user says use gavel, gavel this, put it on trial, should we do X.
+argument-hint: &quot;&lt;the decision&gt; [--last] [--quick] [--deliberate] [--research]&quot;
+allowed-tools: Read, Write, Agent, AskUserQuestion, Bash(python3 *gavel/scripts/gavel.py *)
+metadata:
+  status: active
+  version: &quot;1.1.0&quot;
+  owner: george
+  band: index
+---
+
+# gavel: put a decision on trial, get a ruling you can act on
+
+**Done =** `ruling.md` exists in the case folder, `gavel.py close` accepted it, and the user has the verdict, the
+dissent, and the one fact that would flip it.
+
+You are the **clerk**. You run the setup, file the case, call each role as a fresh subagent on the model the
+setup names, run the script between stages, and report the ruling. You never argue, vote, judge, or edit
+anything a role wrote. Role briefs: `references/roles.md`. Juror bench: `references/bench.md`. Why each rule
+exists: `references/research.md`. `&lt;skill&gt;` below is this skill&#x27;s folder (printed when the skill loads).
+
+## Procedure
+1. **Is this a trial?** If the question has a checkable answer (a fact, a bug, a sum, a test that would settle
+   it), say so and answer it directly; a vote does as well as a debate there. Otherwise tell the user the cost
+   once (2 judge runs, 2 to 4 speeches, one run per juror) and go to setup.
+2. **Setup.** If the user says &quot;use my last settings&quot; or passes `--last`, run `gavel.py settings`, show the line,
+   and skip to step 3 with `--last`. Otherwise:
+   - **The question.** If they have not given it, ask them to type it in one sentence.
+   - **First menu** (one AskUserQuestion call, four questions):
+     - &quot;How hard should the prosecution push?&quot; Fair (concedes what is true) · Tough (Recommended) · Ruthless
+       (attacks every claim, concedes nothing unproven)
+     - &quot;Who sits on the jury?&quot; The judge picks 5 for this case (Recommended) · I&#x27;ll choose the seats · Quick
+       trial: 3 seats, no rebuttals
+     - &quot;Model for the judge?&quot; Opus (Recommended) · Fable · Sonnet · Same as this chat
+     - &quot;Default model for the jury?&quot; Sonnet (Recommended) · Haiku (cheapest) · Opus · Fable
+   - **Second menu** (one call): &quot;Model for the defense?&quot; and &quot;Model for the prosecution?&quot; (Sonnet
+     (Recommended) · Opus · Fable · Haiku). If they chose to pick seats, add two multiSelect questions from the
+     bench: &quot;Build and money seats&quot; (engineer, finance, operations, security and privacy) and &quot;People and market
+     seats&quot; (designer, customer, competitor, legal and compliance). Tell them they can type anyone under Other,
+     such as &quot;a retired airline pilot&quot;, and give one seat its own model as &quot;designer: opus&quot;. The premortem
+     seat always sits. 3 to 8 seats in all.
+   - &quot;Same as this chat&quot; is `inherit`: spawn that role without a model.
+3. **File the case.** Run `python3 &lt;skill&gt;/scripts/gavel.py new &quot;&lt;question&gt;&quot;` with the choices as flags:
+   `--opposition`, `--judge`, `--defense`, `--prosecution`, `--jury`, `--seats &quot;a, b: opus&quot;` or `--quick`, plus
+   `--deliberate`, `--research`, `--last` when asked. It prints the case folder and the plan; show the plan line.
+   A FIX line means a choice was invalid: ask again. Fill `case.md`: facts with sources, constraints, what has
+   been tried, stakes. Ask at most two questions, only for a fact the case turns on. Never invent facts.
+4. **Pretrial.** Spawn the judge with brief 1 on the judge&#x27;s model. `{N}` is the setup&#x27;s `jurors`. Run
+   `gavel.py pretrial &lt;case&gt;`; it prints each seat&#x27;s ballot file and model. On a FIX line, send it to the judge
+   once and rerun.
+5. **Openings.** In one message, spawn the defense (brief 2) and the prosecution (brief 3, with the level
+   paragraph for the setup&#x27;s `opposition` in place of `{LEVEL}`) in parallel, each on its model.
+6. **Rebuttals** (not in a quick trial). In one message, spawn both rebuttals (brief 4) in parallel.
+7. **Record.** `gavel.py record &lt;case&gt;`. A speech over its word limit goes back to its side once.
+8. **Jury.** In one message, spawn every seat with brief 5, in parallel, each on the model `gavel.py pretrial`
+   printed for it. Add the premortem paragraph only to the premortem seat. Then `gavel.py tally &lt;case&gt;`; send
+   any FIX line to that juror once.
+9. **Deliberation** (only with `--deliberate`, or offered when the tally says `split` and the stakes are high).
+   Spawn every juror again with brief 6, then rerun the tally. Round 2 counts only if the jurors who moved name
+   a new point; otherwise the script falls back to the blind vote.
+10. **Ruling.** Spawn a fresh judge with brief 7 on the judge&#x27;s model. Run `gavel.py close &lt;case&gt;`; a FIX line
+    goes back to the judge once.
+11. **Report** in at most eight lines: the VERDICT line, the ruling in plain words, the vote (counts, median,
+    spread), the strongest dissent, what would flip it, and the path to `ruling.md`. Quote; never soften.
+
+## Guardrails
+- Each role reads only the files its brief names and writes only its own file. Roles return one line.
+- The sealed prior is read by the judge alone. The clerk never paraphrases a speech to another role.
+- Never more than two rounds of argument. Never show jurors each other&#x27;s ballots before their blind vote.
+- The prosecution&#x27;s level changes how hard it pushes, never its duty to name a rival and support every claim.
+- The ruling stands as written. To challenge it, file a new case with the new facts.
+- Case files can hold private facts. Keep `.gavel/` out of version control.
+- Jurors on one model share blind spots. The tally says how varied the jury was; repeat that when it matters.
+
+## Related
+`references/roles.md` · `references/bench.md` · `references/research.md` · `scripts/gavel.py` ·
+`scripts/test_gavel.py`
+</code></pre></details>
+  <details class="skill__fold"><summary>Show gavel.py</summary><pre class="skill-code" tabindex="0"><code>#!/usr/bin/env python3
+&quot;&quot;&quot;gavel.py: the parts of a Gavel case that should never be left to judgment. Standard library only.
+
+    python3 gavel.py new &quot;&lt;motion&gt;&quot; [setup flags]  open a case folder with its setup; print the path and the plan
+    python3 gavel.py settings [--dir DIR]          the setup saved from the last case (for &quot;use my last settings&quot;)
+    python3 gavel.py pretrial CASE                 check the judge&#x27;s pretrial.json against the setup
+    python3 gavel.py record CASE [--seed N]       assemble record.md for the jury (checks word limits)
+    python3 gavel.py tally CASE [--seed N]        check every ballot, write tally.json and jury-packet.md
+    python3 gavel.py close CASE                   check ruling.md and add a line to the docket
+    python3 gavel.py list [--dir DIR]             past cases and their verdicts
+
+Exit codes: 0 ok, 1 the case needs a fix (each problem is printed on its own line), 2 bad usage.
+&quot;&quot;&quot;
+import argparse
+import datetime
+import json
+import os
+import random
+import re
+import statistics
+import sys
+
+VERDICTS = [&quot;adopt&quot;, &quot;adopt_with_conditions&quot;, &quot;redesign&quot;, &quot;reject&quot;, &quot;insufficient&quot;]
+LABELS = {&quot;adopt&quot;: &quot;Adopt&quot;, &quot;adopt_with_conditions&quot;: &quot;Adopt with conditions&quot;, &quot;redesign&quot;: &quot;Redesign&quot;,
+          &quot;reject&quot;: &quot;Reject&quot;, &quot;insufficient&quot;: &quot;Insufficient evidence&quot;}
+SIDE = {&quot;adopt&quot;: &quot;for&quot;, &quot;adopt_with_conditions&quot;: &quot;for&quot;, &quot;redesign&quot;: &quot;against&quot;, &quot;reject&quot;: &quot;against&quot;,
+        &quot;insufficient&quot;: &quot;neither&quot;}
+CONFIDENCE = {&quot;low&quot;: 0.5, &quot;medium&quot;: 1.0, &quot;high&quot;: 1.5}
+GRADES = {&quot;verified&quot;, &quot;plausible&quot;, &quot;assumption&quot;}
+FAVORS = {&quot;for&quot;, &quot;against&quot;, &quot;neither&quot;}
+STANDARDS = {&quot;preponderance&quot;, &quot;clear_and_convincing&quot;}
+CAPS = {&quot;opening-for.md&quot;: 500, &quot;opening-against.md&quot;: 500, &quot;rebuttal-for.md&quot;: 250, &quot;rebuttal-against.md&quot;: 250}
+SLACK = 1.10  # a speech may run 10% over its cap before the record refuses it
+MOVE = 15     # probability points a juror may drift in round 2 without giving a reason
+RULING_SECTIONS = [&quot;## Ruling&quot;, &quot;## From my prior&quot;, &quot;## Decisive evidence&quot;, &quot;## Dissent&quot;, &quot;## Conditions&quot;,
+                   &quot;## What would flip this&quot;, &quot;## What to watch&quot;, &quot;## The vote&quot;]
+MODELS = (&quot;opus&quot;, &quot;fable&quot;, &quot;sonnet&quot;, &quot;haiku&quot;, &quot;inherit&quot;)  # what the Agent tool accepts; inherit = this chat&#x27;s model
+LEVELS = (&quot;fair&quot;, &quot;tough&quot;, &quot;ruthless&quot;)                   # how hard the prosecution pushes
+ROLES = (&quot;judge&quot;, &quot;defense&quot;, &quot;prosecution&quot;, &quot;jury&quot;)
+DEFAULT_SETUP = {&quot;opposition&quot;: &quot;tough&quot;, &quot;jurors&quot;: 5, &quot;seats&quot;: None, &quot;quick&quot;: False, &quot;deliberate&quot;: False,
+                 &quot;research&quot;: False,
+                 &quot;models&quot;: {&quot;judge&quot;: &quot;opus&quot;, &quot;defense&quot;: &quot;sonnet&quot;, &quot;prosecution&quot;: &quot;sonnet&quot;, &quot;jury&quot;: &quot;sonnet&quot;}}
+
+
+class CaseError(Exception):
+    &quot;&quot;&quot;A problem in the case files that a role must fix. Carries every problem found, not just the first.&quot;&quot;&quot;
+
+    def __init__(self, problems):
+        self.problems = problems if isinstance(problems, list) else [problems]
+        super().__init__(&quot;; &quot;.join(self.problems))
+
+
+# ---------- helpers ----------
+
+def slug(text, limit=48):
+    s = re.sub(r&quot;[^a-z0-9]+&quot;, &quot;-&quot;, text.lower()).strip(&quot;-&quot;)
+    if len(s) &gt; limit:
+        s = s[:limit + 1]
+        s = s[:s.rfind(&quot;-&quot;)] if &quot;-&quot; in s else s[:limit]  # cut at a word boundary, never mid word
+    return s or &quot;case&quot;
+
+
+def words(text):
+    return len(re.findall(r&quot;\S+&quot;, text))
+
+
+def read(path):
+    with open(path, encoding=&quot;utf-8&quot;) as f:
+        return f.read()
+
+
+def write(path, text):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:
+        f.write(text)
+
+
+def load_json(path):
+    try:
+        return json.loads(read(path))
+    except FileNotFoundError:
+        raise CaseError(f&quot;{os.path.basename(path)}: missing&quot;)
+    except json.JSONDecodeError as e:
+        raise CaseError(f&quot;{os.path.basename(path)}: not valid JSON ({e.msg}, line {e.lineno})&quot;)
+
+
+def seat_file(seat):
+    return slug(seat, 32) + &quot;.json&quot;
+
+
+# ---------- setup ----------
+
+def parse_seats(text):
+    &quot;&quot;&quot;&#x27;engineer, designer: opus, a retired airline pilot&#x27; -&gt; [{&#x27;seat&#x27;: ..., &#x27;model&#x27;: ...}]; premortem always seated.&quot;&quot;&quot;
+    seats = []
+    for item in (t.strip() for t in text.split(&quot;,&quot;)):
+        if not item:
+            continue
+        name, model = item, None
+        if &quot;:&quot; in item:
+            head, tail = item.rsplit(&quot;:&quot;, 1)
+            if tail.strip().lower() in MODELS:
+                name, model = head.strip(), tail.strip().lower()
+        seat = {&quot;seat&quot;: name}
+        if model:
+            seat[&quot;model&quot;] = model
+        seats.append(seat)
+    if not any(s[&quot;seat&quot;].lower() == &quot;premortem&quot; for s in seats):
+        seats.append({&quot;seat&quot;: &quot;premortem&quot;})
+    return seats
+
+
+def build_setup(motion, saved=None, **choices):
+    &quot;&quot;&quot;Merge defaults, the saved settings and this case&#x27;s choices; check every value; return the setup.&quot;&quot;&quot;
+    setup = json.loads(json.dumps(DEFAULT_SETUP))
+    for layer in (saved or {}, {k: v for k, v in choices.items() if v is not None}):
+        for key, value in layer.items():
+            if key == &quot;models&quot;:
+                setup[&quot;models&quot;].update({r: m for r, m in value.items() if m})
+            elif key in setup:
+                setup[key] = value
+    setup[&quot;motion&quot;] = motion.strip()
+    if setup[&quot;quick&quot;] and not setup[&quot;seats&quot;]:
+        setup[&quot;jurors&quot;] = 3
+    bad = []
+    if not setup[&quot;motion&quot;]:
+        bad.append(&quot;setup: the question is empty&quot;)
+    if setup[&quot;opposition&quot;] not in LEVELS:
+        bad.append(f&quot;setup: opposition must be one of {list(LEVELS)}&quot;)
+    for role in ROLES:
+        if setup[&quot;models&quot;].get(role) not in MODELS:
+            bad.append(f&quot;setup: model for {role} must be one of {list(MODELS)}&quot;)
+    if setup[&quot;seats&quot;]:
+        names = [s[&quot;seat&quot;] for s in setup[&quot;seats&quot;]]
+        if not 3 &lt;= len(names) &lt;= 8:
+            bad.append(f&quot;setup: the jury needs 3 to 8 seats including the premortem, got {len(names)}&quot;)
+        if len({seat_file(n) for n in names}) != len(names):
+            bad.append(&quot;setup: two seats share a name&quot;)
+        bad += [f&quot;setup: model for seat {s[&#x27;seat&#x27;]} must be one of {list(MODELS)}&quot;
+                for s in setup[&quot;seats&quot;] if s.get(&quot;model&quot;, &quot;sonnet&quot;) not in MODELS]
+        setup[&quot;jurors&quot;] = len(names)
+    elif not isinstance(setup[&quot;jurors&quot;], int) or not 3 &lt;= setup[&quot;jurors&quot;] &lt;= 8:
+        bad.append(&quot;setup: jurors must be a whole number from 3 to 8&quot;)
+    if bad:
+        raise CaseError(bad)
+    return setup
+
+
+def load_setup(case):
+    path = os.path.join(case, &quot;setup.json&quot;)
+    return load_json(path) if os.path.exists(path) else None
+
+
+def seat_model(setup, seat):
+    for s in (setup or {}).get(&quot;seats&quot;) or []:
+        if s[&quot;seat&quot;].lower() == seat.lower() and s.get(&quot;model&quot;):
+            return s[&quot;model&quot;]
+    return (setup or DEFAULT_SETUP)[&quot;models&quot;][&quot;jury&quot;]
+
+
+def open_case(base, setup):
+    day = datetime.date.today().isoformat()
+    case = os.path.join(base, f&quot;{day}-{slug(setup[&#x27;motion&#x27;])}&quot;)
+    k = 2
+    while os.path.exists(case):
+        case = os.path.join(base, f&quot;{day}-{slug(setup[&#x27;motion&#x27;])}-{k}&quot;)
+        k += 1
+    os.makedirs(os.path.join(case, &quot;ballots&quot;, &quot;round1&quot;))
+    write(os.path.join(case, &quot;setup.json&quot;), json.dumps(setup, indent=2) + &quot;\n&quot;)
+    write(os.path.join(case, &quot;case.md&quot;),
+          f&quot;# Case\n\n**Motion.** {setup[&#x27;motion&#x27;]}\n\n## Facts\n\n## Constraints\n\n## Stakes\n&quot;)
+    remembered = {k: v for k, v in setup.items() if k != &quot;motion&quot;}
+    write(os.path.join(base, &quot;settings.json&quot;), json.dumps(remembered, indent=2) + &quot;\n&quot;)
+    return case
+
+
+def describe(setup):
+    m = setup[&quot;models&quot;]
+    jury = (&quot;, &quot;.join(f&quot;{s[&#x27;seat&#x27;]} ({seat_model(setup, s[&#x27;seat&#x27;])})&quot; for s in setup[&quot;seats&quot;])
+            if setup[&quot;seats&quot;] else f&quot;{setup[&#x27;jurors&#x27;]} seats picked by the judge ({m[&#x27;jury&#x27;]})&quot;)
+    flags = [f for f in (&quot;quick&quot;, &quot;deliberate&quot;, &quot;research&quot;) if setup.get(f)]
+    return (f&quot;judge {m[&#x27;judge&#x27;]} · defense {m[&#x27;defense&#x27;]} · prosecution {m[&#x27;prosecution&#x27;]} &quot;
+            f&quot;({setup[&#x27;opposition&#x27;]}) · jury: {jury}&quot; + (f&quot; · {&#x27;, &#x27;.join(flags)}&quot; if flags else &quot;&quot;))
+
+
+# ---------- pretrial ----------
+
+def check_pretrial(case):
+    p = load_json(os.path.join(case, &quot;pretrial.json&quot;))
+    setup = load_setup(case)
+    bad = []
+    if not str(p.get(&quot;motion&quot;, &quot;&quot;)).strip():
+        bad.append(&quot;pretrial.json: motion is empty&quot;)
+    if p.get(&quot;standard&quot;) not in STANDARDS:
+        bad.append(f&quot;pretrial.json: standard must be one of {sorted(STANDARDS)}&quot;)
+    hyps = p.get(&quot;hypotheses&quot;, [])
+    if not isinstance(hyps, list) or not 3 &lt;= len(hyps) &lt;= 5:
+        bad.append(&quot;pretrial.json: hypotheses must be a list of 3 to 5&quot;)
+    elif not all(isinstance(h, dict) and h.get(&quot;id&quot;) and str(h.get(&quot;text&quot;, &quot;&quot;)).strip() for h in hyps):
+        bad.append(&quot;pretrial.json: every hypothesis needs an id and text&quot;)
+    crit = p.get(&quot;criteria&quot;, [])
+    if not isinstance(crit, list) or not 2 &lt;= len(crit) &lt;= 4:
+        bad.append(&quot;pretrial.json: criteria must be a list of 2 to 4&quot;)
+    else:
+        for c in crit:
+            if not isinstance(c, dict) or not c.get(&quot;id&quot;) or not c.get(&quot;name&quot;):
+                bad.append(&quot;pretrial.json: every criterion needs an id and a name&quot;)
+            elif c.get(&quot;weight&quot;) not in (1, 2, 3):
+                bad.append(f&quot;pretrial.json: criterion {c.get(&#x27;id&#x27;)} weight must be 1, 2 or 3&quot;)
+    seats = p.get(&quot;seats&quot;, [])
+    if not isinstance(seats, list) or not 3 &lt;= len(seats) &lt;= 8:
+        bad.append(&quot;pretrial.json: seats must be a list of 3 to 8&quot;)
+    else:
+        names = [str(s.get(&quot;seat&quot;, &quot;&quot;)).strip() for s in seats if isinstance(s, dict)]
+        if len(names) != len(seats) or not all(names):
+            bad.append(&quot;pretrial.json: every seat needs a name&quot;)
+        if len({seat_file(n) for n in names}) != len(names):
+            bad.append(&quot;pretrial.json: two seats share a name&quot;)
+        if sum(1 for s in seats if isinstance(s, dict) and s.get(&quot;premortem&quot;) is True) != 1:
+            bad.append(&quot;pretrial.json: exactly one seat must have \&quot;premortem\&quot;: true&quot;)
+        if any(isinstance(s, dict) and not str(s.get(&quot;question&quot;, &quot;&quot;)).strip() for s in seats):
+            bad.append(&quot;pretrial.json: every seat needs its own question&quot;)
+        if setup and setup.get(&quot;seats&quot;):
+            want = sorted(s[&quot;seat&quot;].lower() for s in setup[&quot;seats&quot;])
+            if sorted(n.lower() for n in names) != want:
+                bad.append(f&quot;pretrial.json: seats must be exactly the ones the user chose: {want}&quot;)
+        elif setup and len(seats) != setup.get(&quot;jurors&quot;):
+            bad.append(f&quot;pretrial.json: the user asked for {setup.get(&#x27;jurors&#x27;)} seats, got {len(seats)}&quot;)
+    if bad:
+        raise CaseError(bad)
+    return p
+
+
+# ---------- record ----------
+
+def build_record(case, seed=None):
+    p = check_pretrial(case)
+    bad, speeches = [], {}
+    for name, cap in CAPS.items():
+        path = os.path.join(case, name)
+        if not os.path.exists(path):
+            if name.startswith(&quot;opening&quot;):
+                bad.append(f&quot;{name}: missing&quot;)
+            continue
+        text = read(path).strip()
+        n = words(text)
+        if n &gt; cap * SLACK:
+            bad.append(f&quot;{name}: {n} words, the limit is {cap}; ask that side to cut it&quot;)
+        speeches[name] = (text, n)
+    if (&quot;rebuttal-for.md&quot; in speeches) != (&quot;rebuttal-against.md&quot; in speeches):
+        bad.append(&quot;rebuttals: one side filed a rebuttal and the other did not&quot;)
+    if bad:
+        raise CaseError(bad)
+
+    rng = random.Random(seed)
+    order = [&quot;for&quot;, &quot;against&quot;]
+    rng.shuffle(order)  # who speaks first in the record is random, so neither side owns the first word
+    title = {&quot;for&quot;: &quot;For the motion&quot;, &quot;against&quot;: &quot;Against the motion&quot;}
+    out = [f&quot;# The record\n\n**Motion.** {p[&#x27;motion&#x27;]}\n&quot;,
+           f&quot;**Standard of proof.** {p[&#x27;standard&#x27;].replace(&#x27;_&#x27;, &#x27; &#x27;)}. The burden is on the side for the motion.\n&quot;,
+           &quot;## Hypotheses the judge set before any argument\n&quot;]
+    out += [f&quot;- **{h[&#x27;id&#x27;]}** {h[&#x27;text&#x27;]}&quot; for h in p[&quot;hypotheses&quot;]]
+    out.append(&quot;\n## Criteria\n&quot;)
+    out += [f&quot;- **{c[&#x27;id&#x27;]}** {c[&#x27;name&#x27;]} (weight {c[&#x27;weight&#x27;]}): {c.get(&#x27;question&#x27;, &#x27;&#x27;)}&quot; for c in p[&quot;criteria&quot;]]
+    out.append(&quot;\n## The case file\n&quot;)
+    out.append(read(os.path.join(case, &quot;case.md&quot;)).strip() if os.path.exists(os.path.join(case, &quot;case.md&quot;))
+               else &quot;_No case file._&quot;)
+    for stage in (&quot;opening&quot;, &quot;rebuttal&quot;):
+        if f&quot;{stage}-for.md&quot; not in speeches:
+            continue
+        out.append(f&quot;\n## {stage.capitalize()}s\n&quot;)
+        for side in order:
+            text, n = speeches[f&quot;{stage}-{side}.md&quot;]
+            out.append(f&quot;### {title[side]} ({n} words)\n\n{text}\n&quot;)
+    out.append(f&quot;\n_Order of sides in this record: {&#x27;, &#x27;.join(title[s] for s in order)} (random)._\n&quot;)
+    write(os.path.join(case, &quot;record.md&quot;), &quot;\n&quot;.join(out))
+    return order
+
+
+# ---------- ballots ----------
+
+def check_ballot(b, seat, criteria, rnd, path):
+    tag = os.path.relpath(path)
+    bad = []
+    if not isinstance(b, dict):
+        return [f&quot;{tag}: a ballot must be a JSON object&quot;]
+    if str(b.get(&quot;seat&quot;, &quot;&quot;)).strip().lower() != seat.lower():
+        bad.append(f&quot;{tag}: seat is {b.get(&#x27;seat&#x27;)!r}, expected {seat!r}&quot;)
+    if b.get(&quot;verdict&quot;) not in VERDICTS:
+        bad.append(f&quot;{tag}: verdict must be one of {VERDICTS}&quot;)
+    prob = b.get(&quot;probability&quot;)
+    if not isinstance(prob, (int, float)) or isinstance(prob, bool) or not 0 &lt;= prob &lt;= 100:
+        bad.append(f&quot;{tag}: probability must be a number from 0 to 100&quot;)
+    if b.get(&quot;confidence&quot;) not in CONFIDENCE:
+        bad.append(f&quot;{tag}: confidence must be low, medium or high&quot;)
+    findings = b.get(&quot;findings&quot;)
+    if not isinstance(findings, list) or not 1 &lt;= len(findings) &lt;= 6:
+        bad.append(f&quot;{tag}: findings must be a list of 1 to 6&quot;)
+    else:
+        for i, f in enumerate(findings, 1):
+            if not isinstance(f, dict) or not str(f.get(&quot;text&quot;, &quot;&quot;)).strip():
+                bad.append(f&quot;{tag}: finding {i} needs text&quot;)
+                continue
+            if f.get(&quot;grade&quot;) not in GRADES:
+                bad.append(f&quot;{tag}: finding {i} grade must be verified, plausible or assumption&quot;)
+            if f.get(&quot;favors&quot;) not in FAVORS:
+                bad.append(f&quot;{tag}: finding {i} favors must be for, against or neither&quot;)
+            if not re.fullmatch(r&quot;([FA]\d+|case)&quot;, str(f.get(&quot;claim&quot;, &quot;&quot;))):
+                bad.append(f&quot;{tag}: finding {i} claim must be a claim id like F2 or A1, or \&quot;case\&quot;&quot;)
+    scores = b.get(&quot;scores&quot;)
+    if not isinstance(scores, dict) or set(scores) != set(criteria):
+        bad.append(f&quot;{tag}: scores must give every criterion exactly once: {sorted(criteria)}&quot;)
+    elif any(not isinstance(v, int) or isinstance(v, bool) or not 1 &lt;= v &lt;= 5 for v in scores.values()):
+        bad.append(f&quot;{tag}: every score must be a whole number from 1 to 5&quot;)
+    for key in (&quot;decisive&quot;, &quot;change_my_mind&quot;):
+        if not str(b.get(key, &quot;&quot;)).strip():
+            bad.append(f&quot;{tag}: {key} is empty&quot;)
+    if b.get(&quot;verdict&quot;) == &quot;adopt_with_conditions&quot; and not b.get(&quot;conditions&quot;):
+        bad.append(f&quot;{tag}: adopt_with_conditions needs at least one condition&quot;)
+    if rnd == 2 and &quot;flip_reason&quot; not in b:
+        bad.append(f&quot;{tag}: round 2 ballots need flip_reason (empty string if nothing changed)&quot;)
+    return bad
+
+
+def load_round(case, seats, criteria, rnd):
+    folder = os.path.join(case, &quot;ballots&quot;, f&quot;round{rnd}&quot;)
+    ballots, bad = {}, []
+    for s in seats:
+        path = os.path.join(folder, seat_file(s))
+        try:
+            b = load_json(path)
+        except CaseError as e:
+            bad += [f&quot;ballots/round{rnd}/{m}&quot; for m in e.problems]
+            continue
+        bad += check_ballot(b, s, criteria, rnd, path)
+        ballots[s] = b
+    if bad:
+        raise CaseError(bad)
+    return ballots
+
+
+# ---------- tally ----------
+
+def majority_side(ballots):
+    counts = {&quot;for&quot;: 0, &quot;against&quot;: 0, &quot;neither&quot;: 0}
+    for b in ballots.values():
+        counts[SIDE[b[&quot;verdict&quot;]]] += 1
+    top = max(counts.values())
+    leaders = [s for s, n in counts.items() if n == top]
+    return (leaders[0] if len(leaders) == 1 else &quot;tied&quot;), counts
+
+
+def audit_flips(r1, r2):
+    &quot;&quot;&quot;Round 2 is trusted only if the jurors who moved say what new point moved them.&quot;&quot;&quot;
+    side1, _ = majority_side(r1)
+    flips = []
+    for seat, b2 in r2.items():
+        b1 = r1[seat]
+        moved = b1[&quot;verdict&quot;] != b2[&quot;verdict&quot;] or abs(b1[&quot;probability&quot;] - b2[&quot;probability&quot;]) &gt; MOVE
+        if not moved:
+            continue
+        cited_before = {f[&quot;claim&quot;] for f in b1[&quot;findings&quot;]}
+        reason = str(b2.get(&quot;flip_reason&quot;, &quot;&quot;)).strip()
+        new_point = bool(re.search(r&quot;\bJuror [A-H]\b&quot;, reason)) or any(
+            c not in cited_before for c in re.findall(r&quot;\b[FA]\d+\b&quot;, reason))
+        toward = SIDE[b2[&quot;verdict&quot;]] == side1 and SIDE[b1[&quot;verdict&quot;]] != side1
+        flips.append({&quot;seat&quot;: seat, &quot;from&quot;: b1[&quot;verdict&quot;], &quot;to&quot;: b2[&quot;verdict&quot;],
+                      &quot;probability&quot;: [b1[&quot;probability&quot;], b2[&quot;probability&quot;]],
+                      &quot;justified&quot;: bool(reason) and new_point, &quot;toward_majority&quot;: toward, &quot;reason&quot;: reason})
+    unjustified = sum(1 for f in flips if not f[&quot;justified&quot;])
+    herding = bool(flips) and all(f[&quot;toward_majority&quot;] for f in flips) and not any(f[&quot;justified&quot;] for f in flips)
+    if flips and (unjustified * 2 &gt; len(flips) or herding):
+        return flips, 1, (f&quot;{unjustified} of {len(flips)} changes named no new point&quot;
+                          + (&quot;; every change moved toward the round 1 majority&quot; if herding else &quot;&quot;))
+    return flips, 2, &quot;round 2 changes cite new points&quot; if flips else &quot;nobody changed their vote&quot;
+
+
+def summarize(ballots, criteria):
+    probs = sorted(b[&quot;probability&quot;] for b in ballots.values())
+    weights = [CONFIDENCE[b[&quot;confidence&quot;]] for b in ballots.values()]
+    side, counts = majority_side(ballots)
+    n = len(ballots)
+    top = max(counts[&quot;for&quot;], counts[&quot;against&quot;], counts[&quot;neither&quot;])
+    spread = &quot;unanimous&quot; if top == n else (&quot;lean&quot; if top * 3 &gt;= n * 2 else &quot;split&quot;)
+    q = statistics.quantiles(probs, n=4, method=&quot;inclusive&quot;) if n &gt;= 2 else [probs[0]] * 3
+    crit_means = {c: round(statistics.mean(b[&quot;scores&quot;][c] for b in ballots.values()), 2) for c in criteria}
+    verified = {&quot;for&quot;: 0, &quot;against&quot;: 0, &quot;neither&quot;: 0}
+    for b in ballots.values():
+        for f in b[&quot;findings&quot;]:
+            if f[&quot;grade&quot;] == &quot;verified&quot;:
+                verified[f[&quot;favors&quot;]] += 1
+    minority = []
+    for seat, b in ballots.items():
+        if side in (&quot;for&quot;, &quot;against&quot;) and SIDE[b[&quot;verdict&quot;]] != side:
+            against_majority = [f for f in b[&quot;findings&quot;] if f[&quot;grade&quot;] == &quot;verified&quot; and f[&quot;favors&quot;] not in (side, &quot;neither&quot;)]
+            minority.append({&quot;seat&quot;: seat, &quot;verdict&quot;: b[&quot;verdict&quot;], &quot;probability&quot;: b[&quot;probability&quot;],
+                             &quot;decisive&quot;: b[&quot;decisive&quot;], &quot;verified_against_majority&quot;: len(against_majority)})
+    return {
+        &quot;jurors&quot;: n,
+        &quot;verdicts&quot;: {v: sum(1 for b in ballots.values() if b[&quot;verdict&quot;] == v) for v in VERDICTS},
+        &quot;sides&quot;: counts, &quot;majority_side&quot;: side, &quot;spread&quot;: spread,
+        &quot;probability&quot;: {&quot;median&quot;: statistics.median(probs), &quot;q1&quot;: q[0], &quot;q3&quot;: q[2], &quot;min&quot;: probs[0], &quot;max&quot;: probs[-1],
+                        &quot;confidence_weighted_mean&quot;: round(sum(p * w for p, w in zip(
+                            [b[&quot;probability&quot;] for b in ballots.values()], weights)) / sum(weights), 1)},
+        &quot;criteria_means&quot;: crit_means,
+        &quot;verified_findings&quot;: verified,
+        &quot;minority&quot;: minority,
+        &quot;strong_minority&quot;: any(m[&quot;verified_against_majority&quot;] for m in minority),
+        &quot;objections&quot;: [{&quot;seat&quot;: s, &quot;objection&quot;: b[&quot;objection&quot;]} for s, b in ballots.items() if b.get(&quot;objection&quot;)],
+    }
+
+
+def tally(case, seed=None):
+    p = check_pretrial(case)
+    seats = [s[&quot;seat&quot;] for s in p[&quot;seats&quot;]]
+    criteria = [c[&quot;id&quot;] for c in p[&quot;criteria&quot;]]
+    r1 = load_round(case, seats, criteria, 1)
+    used, rounds, flips, note = r1, 1, [], &quot;blind vote only&quot;
+    if os.path.isdir(os.path.join(case, &quot;ballots&quot;, &quot;round2&quot;)):
+        r2 = load_round(case, seats, criteria, 2)
+        flips, rounds, note = audit_flips(r1, r2)
+        used = r2 if rounds == 2 else r1
+    result = summarize(used, criteria)
+    setup = load_setup(case)
+    juror_models = {seat: seat_model(setup, seat) for seat in seats}
+    distinct = sorted(set(juror_models.values()))
+    result.update({
+        &quot;round_used&quot;: rounds, &quot;round_note&quot;: note, &quot;flips&quot;: flips, &quot;juror_models&quot;: juror_models,
+        &quot;correlation_note&quot;: (f&quot;Every juror ran on the same model ({distinct[0]}), so their errors are likely &quot;
+                             &quot;correlated; agreement is weaker evidence than the count suggests.&quot;)
+                            if len(distinct) == 1 else
+                            (f&quot;Jurors ran on {len(distinct)} models ({&#x27;, &#x27;.join(distinct)}), all from one family; &quot;
+                             &quot;that spreads the errors a little, not fully.&quot;),
+    })
+
+    rng = random.Random(seed)
+    order = list(used)
+    rng.shuffle(order)  # the judge reads ballots in a random order under letters, never in seating order
+    letters = {seat: f&quot;Juror {chr(65 + i)}&quot; for i, seat in enumerate(order)}
+    result[&quot;packet_order&quot;] = [letters[s] for s in order]
+    write(os.path.join(case, &quot;tally.json&quot;), json.dumps(result, indent=2) + &quot;\n&quot;)
+
+    lines = [f&quot;# Jury packet\n\nBallots from round {rounds} ({note}), in random order. &quot;
+             &quot;Each juror voted alone before seeing any other ballot.\n&quot;]
+    for seat in order:
+        b = used[seat]
+        lines.append(f&quot;## {letters[seat]}: {seat}\n&quot;)
+        lines.append(f&quot;**Verdict** {LABELS[b[&#x27;verdict&#x27;]]} · **probability** {b[&#x27;probability&#x27;]} · &quot;
+                     f&quot;**confidence** {b[&#x27;confidence&#x27;]}\n&quot;)
+        lines.append(&quot;**Findings**&quot;)
+        lines += [f&quot;- [{f[&#x27;claim&#x27;]}, {f[&#x27;grade&#x27;]}, favors {f[&#x27;favors&#x27;]}] {f[&#x27;text&#x27;]}&quot; for f in b[&quot;findings&quot;]]
+        lines.append(f&quot;\n**Scores** &quot; + &quot;, &quot;.join(f&quot;{k} {v}&quot; for k, v in b[&quot;scores&quot;].items()))
+        lines.append(f&quot;\n**Decisive** {b[&#x27;decisive&#x27;]}\n\n**Would change my mind** {b[&#x27;change_my_mind&#x27;]}&quot;)
+        if b.get(&quot;conditions&quot;):
+            lines.append(&quot;\n**Conditions**&quot;)
+            lines += [f&quot;- {c}&quot; for c in b[&quot;conditions&quot;]]
+        if b.get(&quot;objection&quot;):
+            lines.append(f&quot;\n**Objection to the motion** {b[&#x27;objection&#x27;]}&quot;)
+        if rounds == 2 and b.get(&quot;flip_reason&quot;):
+            lines.append(f&quot;\n**Why I moved** {b[&#x27;flip_reason&#x27;]}&quot;)
+        lines.append(&quot;&quot;)
+    write(os.path.join(case, &quot;jury-packet.md&quot;), &quot;\n&quot;.join(lines))
+    return result, letters
+
+
+# ---------- close and list ----------
+
+def check_ruling(case):
+    path = os.path.join(case, &quot;ruling.md&quot;)
+    if not os.path.exists(path):
+        raise CaseError(&quot;ruling.md: missing&quot;)
+    text = read(path)
+    bad = []
+    first = text.strip().splitlines()[0] if text.strip() else &quot;&quot;
+    m = re.fullmatch(r&quot;VERDICT: (Adopt|Adopt with conditions|Redesign|Reject|Insufficient evidence) &quot;
+                     r&quot;\(confidence (low|medium|high)\)&quot;, first.strip())
+    if not m:
+        bad.append(&quot;ruling.md: first line must read &#x27;VERDICT: &lt;Adopt | Adopt with conditions | Redesign | Reject | &quot;
+                   &quot;Insufficient evidence&gt; (confidence &lt;low|medium|high&gt;)&#x27;&quot;)
+    bad += [f&quot;ruling.md: missing section &#x27;{s}&#x27;&quot; for s in RULING_SECTIONS if s not in text]
+    if words(text) &gt; 600 * SLACK:
+        bad.append(f&quot;ruling.md: {words(text)} words, the limit is 600&quot;)
+    if bad:
+        raise CaseError(bad)
+    return m.group(1), m.group(2)
+
+
+def close(case):
+    verdict, conf = check_ruling(case)
+    motion = check_pretrial(case)[&quot;motion&quot;]
+    docket = os.path.join(os.path.dirname(os.path.abspath(case)), &quot;docket.md&quot;)
+    line = f&quot;- {os.path.basename(os.path.abspath(case))} · {verdict} ({conf}) · {motion}\n&quot;
+    existing = read(docket) if os.path.exists(docket) else &quot;# Docket\n\n&quot;
+    if line not in existing:
+        write(docket, existing + line)
+    return verdict, conf
+
+
+def list_cases(base):
+    if not os.path.isdir(base):
+        return []
+    rows = []
+    for name in sorted(os.listdir(base)):
+        case = os.path.join(base, name)
+        if not os.path.isdir(case):
+            continue
+        try:
+            verdict = check_ruling(case)[0]
+        except CaseError:
+            verdict = &quot;open&quot;
+        try:
+            motion = load_json(os.path.join(case, &quot;pretrial.json&quot;)).get(&quot;motion&quot;, &quot;&quot;)
+        except CaseError:
+            motion = &quot;&quot;
+        rows.append((name, verdict, motion))
+    return rows
+
+
+# ---------- command line ----------
+
+def main(argv=None):
+    home = os.environ.get(&quot;GAVEL_DIR&quot;, &quot;.gavel&quot;)
+    ap = argparse.ArgumentParser(prog=&quot;gavel.py&quot;, description=__doc__.splitlines()[0])
+    sub = ap.add_subparsers(dest=&quot;cmd&quot;, required=True)
+    new = sub.add_parser(&quot;new&quot;, help=&quot;open a case folder with its setup&quot;)
+    new.add_argument(&quot;motion&quot;)
+    new.add_argument(&quot;--dir&quot;, default=home)
+    new.add_argument(&quot;--last&quot;, action=&quot;store_true&quot;, help=&quot;start from the settings saved by the last case&quot;)
+    new.add_argument(&quot;--opposition&quot;, choices=LEVELS)
+    new.add_argument(&quot;--seats&quot;, help=&#x27;comma separated, e.g. &quot;engineer, designer: opus, a retired pilot&quot;&#x27;)
+    new.add_argument(&quot;--jurors&quot;, type=int, help=&quot;3 to 8 seats for the judge to pick (ignored with --seats)&quot;)
+    for role in ROLES:
+        new.add_argument(f&quot;--{role}&quot;, choices=MODELS, help=f&quot;model for the {role}&quot;)
+    for flag in (&quot;quick&quot;, &quot;deliberate&quot;, &quot;research&quot;):
+        new.add_argument(f&quot;--{flag}&quot;, action=&quot;store_true&quot;, default=None)
+    sub.add_parser(&quot;settings&quot;, help=&quot;the setup saved by the last case&quot;).add_argument(&quot;--dir&quot;, default=home)
+    for name in (&quot;pretrial&quot;, &quot;record&quot;, &quot;tally&quot;, &quot;close&quot;):
+        cmd = sub.add_parser(name)
+        cmd.add_argument(&quot;case&quot;)
+        if name in (&quot;record&quot;, &quot;tally&quot;):
+            cmd.add_argument(&quot;--seed&quot;, type=int, help=&quot;fix the random order (for tests and appeals)&quot;)
+    sub.add_parser(&quot;list&quot;, help=&quot;past cases&quot;).add_argument(&quot;--dir&quot;, default=home)
+    a = ap.parse_args(argv)
+
+    try:
+        if a.cmd == &quot;new&quot;:
+            saved_path = os.path.join(a.dir, &quot;settings.json&quot;)
+            saved = load_json(saved_path) if a.last and os.path.exists(saved_path) else None
+            setup = build_setup(
+                a.motion, saved, opposition=a.opposition, jurors=a.jurors,
+                seats=parse_seats(a.seats) if a.seats else None,
+                models={r: getattr(a, r) for r in ROLES},
+                quick=a.quick, deliberate=a.deliberate, research=a.research)
+            print(open_case(a.dir, setup))
+            print(describe(setup))
+        elif a.cmd == &quot;settings&quot;:
+            path = os.path.join(a.dir, &quot;settings.json&quot;)
+            if not os.path.exists(path):
+                print(&quot;no saved settings&quot;)
+            else:
+                print(describe(dict(load_json(path), motion=&quot;&quot;)))
+        elif a.cmd == &quot;pretrial&quot;:
+            p = check_pretrial(a.case)
+            setup = load_setup(a.case)
+            print(f&quot;pretrial ok: {len(p[&#x27;seats&#x27;])} seats, standard {p[&#x27;standard&#x27;]}&quot;)
+            for s in p[&quot;seats&quot;]:
+                print(f&quot;seat {s[&#x27;seat&#x27;]} -&gt; ballots/round1/{seat_file(s[&#x27;seat&#x27;])} model {seat_model(setup, s[&#x27;seat&#x27;])}&quot;
+                      + (&quot;  (premortem)&quot; if s.get(&quot;premortem&quot;) else &quot;&quot;))
+        elif a.cmd == &quot;record&quot;:
+            order = build_record(a.case, a.seed)
+            print(f&quot;record ok: {os.path.join(a.case, &#x27;record.md&#x27;)} (first side: {order[0]})&quot;)
+        elif a.cmd == &quot;tally&quot;:
+            r, letters = tally(a.case, a.seed)
+            pr = r[&quot;probability&quot;]
+            print(f&quot;tally ok: round {r[&#x27;round_used&#x27;]} ({r[&#x27;round_note&#x27;]}); {r[&#x27;jurors&#x27;]} jurors; &quot;
+                  f&quot;majority {r[&#x27;majority_side&#x27;]}, {r[&#x27;spread&#x27;]}; median {pr[&#x27;median&#x27;]} (q1 {pr[&#x27;q1&#x27;]}, q3 {pr[&#x27;q3&#x27;]})&quot;
+                  + (&quot;; STRONG MINORITY&quot; if r[&quot;strong_minority&quot;] else &quot;&quot;))
+        elif a.cmd == &quot;close&quot;:
+            verdict, conf = close(a.case)
+            print(f&quot;closed: {verdict} ({conf})&quot;)
+        elif a.cmd == &quot;list&quot;:
+            rows = list_cases(a.dir)
+            if not rows:
+                print(&quot;no cases&quot;)
+            for name, verdict, motion in rows:
+                print(f&quot;{name} | {verdict} | {motion}&quot;)
+    except CaseError as e:
+        for msg in e.problems:
+            print(f&quot;FIX {msg}&quot;, file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == &quot;__main__&quot;:
+    sys.exit(main())
+</code></pre></details><details class="skill__fold"><summary>Show test_gavel.py</summary><pre class="skill-code" tabindex="0"><code>#!/usr/bin/env python3
+&quot;&quot;&quot;Tests for gavel.py. Run: python3 test_gavel.py   (standard library only, no network, temp folders only)&quot;&quot;&quot;
+import contextlib
+import io
+import json
+import os
+import shutil
+import sys
+import tempfile
+import unittest
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gavel  # noqa: E402
+
+PRETRIAL = {
+    &quot;motion&quot;: &quot;Resolved: the team should ship the beta on Friday.&quot;,
+    &quot;standard&quot;: &quot;preponderance&quot;,
+    &quot;hypotheses&quot;: [{&quot;id&quot;: &quot;H1&quot;, &quot;text&quot;: &quot;Friday is right&quot;}, {&quot;id&quot;: &quot;H2&quot;, &quot;text&quot;: &quot;Wait a week&quot;},
+                   {&quot;id&quot;: &quot;H3&quot;, &quot;text&quot;: &quot;The beta is the wrong next step&quot;}],
+    &quot;criteria&quot;: [{&quot;id&quot;: &quot;C1&quot;, &quot;name&quot;: &quot;Risk&quot;, &quot;weight&quot;: 3, &quot;question&quot;: &quot;What breaks?&quot;},
+                 {&quot;id&quot;: &quot;C2&quot;, &quot;name&quot;: &quot;Value&quot;, &quot;weight&quot;: 2, &quot;question&quot;: &quot;Who gains?&quot;}],
+    &quot;seats&quot;: [{&quot;seat&quot;: &quot;engineer&quot;, &quot;question&quot;: &quot;Will it hold?&quot;},
+              {&quot;seat&quot;: &quot;designer&quot;, &quot;question&quot;: &quot;Is it usable?&quot;},
+              {&quot;seat&quot;: &quot;premortem&quot;, &quot;question&quot;: &quot;It failed. Why?&quot;, &quot;premortem&quot;: True}],
+}
+
+
+def ballot(seat, verdict=&quot;adopt&quot;, prob=70, conf=&quot;medium&quot;, claims=(&quot;F1&quot;,), favors=&quot;for&quot;, grade=&quot;plausible&quot;, **extra):
+    b = {&quot;seat&quot;: seat, &quot;verdict&quot;: verdict, &quot;probability&quot;: prob, &quot;confidence&quot;: conf,
+         &quot;findings&quot;: [{&quot;claim&quot;: c, &quot;text&quot;: f&quot;point {c}&quot;, &quot;grade&quot;: grade, &quot;favors&quot;: favors} for c in claims],
+         &quot;scores&quot;: {&quot;C1&quot;: 3, &quot;C2&quot;: 4}, &quot;decisive&quot;: &quot;the main point&quot;, &quot;change_my_mind&quot;: &quot;a failed test&quot;,
+         &quot;conditions&quot;: [&quot;a condition&quot;] if verdict == &quot;adopt_with_conditions&quot; else [], &quot;objection&quot;: None}
+    b.update(extra)
+    return b
+
+
+class CaseTest(unittest.TestCase):
+    def setUp(self):
+        self.base = tempfile.mkdtemp()
+        self.case = os.path.join(self.base, &quot;case&quot;)
+        os.makedirs(os.path.join(self.case, &quot;ballots&quot;, &quot;round1&quot;))
+        self.put(&quot;pretrial.json&quot;, json.dumps(PRETRIAL))
+        self.put(&quot;case.md&quot;, &quot;# Case\n\nThe facts.&quot;)
+
+    def tearDown(self):
+        shutil.rmtree(self.base)
+
+    def put(self, rel, text):
+        path = os.path.join(self.case, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:
+            f.write(text)
+
+    def vote(self, rnd, b):
+        self.put(f&quot;ballots/round{rnd}/{gavel.seat_file(b[&#x27;seat&#x27;])}&quot;, json.dumps(b))
+
+    def speeches(self, n_open=100, n_reb=50, rebuttals=True):
+        self.put(&quot;opening-for.md&quot;, &quot;word &quot; * n_open)
+        self.put(&quot;opening-against.md&quot;, &quot;word &quot; * n_open)
+        if rebuttals:
+            self.put(&quot;rebuttal-for.md&quot;, &quot;word &quot; * n_reb)
+            self.put(&quot;rebuttal-against.md&quot;, &quot;word &quot; * n_reb)
+
+    def assertFix(self, fn, *needles):
+        with self.assertRaises(gavel.CaseError) as cm:
+            fn()
+        joined = &quot; | &quot;.join(cm.exception.problems)
+        for needle in needles:
+            self.assertIn(needle, joined)
+
+
+class TestNew(unittest.TestCase):
+    def test_new_makes_a_case_folder_and_never_overwrites(self):
+        base = tempfile.mkdtemp()
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(gavel.main([&quot;new&quot;, &quot;Ship it?&quot;, &quot;--dir&quot;, base]), 0)
+                self.assertEqual(gavel.main([&quot;new&quot;, &quot;Ship it?&quot;, &quot;--dir&quot;, base]), 0)
+            names = sorted(n for n in os.listdir(base) if os.path.isdir(os.path.join(base, n)))
+            self.assertEqual(len(names), 2)
+            self.assertTrue(names[1].endswith(&quot;-2&quot;))
+            self.assertTrue(os.path.isdir(os.path.join(base, names[0], &quot;ballots&quot;, &quot;round1&quot;)))
+        finally:
+            shutil.rmtree(base)
+
+
+class TestSetup(unittest.TestCase):
+    def setUp(self):
+        self.base = tempfile.mkdtemp()
+
+    def tearDown(self):
+        shutil.rmtree(self.base)
+
+    def new(self, *args):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = gavel.main([&quot;new&quot;, &quot;Should we ship?&quot;, &quot;--dir&quot;, self.base, *args])
+        return code, out.getvalue().splitlines()
+
+    def test_defaults_are_a_strong_judge_and_a_tough_prosecution(self):
+        s = gavel.build_setup(&quot;Ship?&quot;)
+        self.assertEqual(s[&quot;models&quot;], {&quot;judge&quot;: &quot;opus&quot;, &quot;defense&quot;: &quot;sonnet&quot;, &quot;prosecution&quot;: &quot;sonnet&quot;, &quot;jury&quot;: &quot;sonnet&quot;})
+        self.assertEqual((s[&quot;opposition&quot;], s[&quot;jurors&quot;], s[&quot;seats&quot;]), (&quot;tough&quot;, 5, None))
+
+    def test_seats_take_custom_people_and_per_seat_models(self):
+        seats = gavel.parse_seats(&quot;engineer, designer: opus, a retired airline pilot&quot;)
+        self.assertEqual([x[&quot;seat&quot;] for x in seats], [&quot;engineer&quot;, &quot;designer&quot;, &quot;a retired airline pilot&quot;, &quot;premortem&quot;])
+        self.assertEqual(seats[1][&quot;model&quot;], &quot;opus&quot;)
+        setup = gavel.build_setup(&quot;Ship?&quot;, seats=seats, models={&quot;jury&quot;: &quot;haiku&quot;})
+        self.assertEqual(setup[&quot;jurors&quot;], 4)
+        self.assertEqual(gavel.seat_model(setup, &quot;designer&quot;), &quot;opus&quot;)
+        self.assertEqual(gavel.seat_model(setup, &quot;engineer&quot;), &quot;haiku&quot;)
+
+    def test_bad_choices_are_all_named(self):
+        with self.assertRaises(gavel.CaseError) as cm:
+            gavel.build_setup(&quot;Ship?&quot;, opposition=&quot;savage&quot;, seats=gavel.parse_seats(&quot;engineer&quot;),
+                              models={&quot;judge&quot;: &quot;gpt&quot;})
+        joined = &quot; | &quot;.join(cm.exception.problems)
+        for needle in (&quot;opposition&quot;, &quot;model for judge&quot;, &quot;3 to 8 seats&quot;):
+            self.assertIn(needle, joined)
+
+    def test_case_folder_holds_the_setup_and_the_choices_are_remembered(self):
+        code, lines = self.new(&quot;--opposition&quot;, &quot;ruthless&quot;, &quot;--judge&quot;, &quot;fable&quot;, &quot;--jury&quot;, &quot;haiku&quot;)
+        self.assertEqual(code, 0)
+        setup = json.loads(gavel.read(os.path.join(lines[0], &quot;setup.json&quot;)))
+        self.assertEqual((setup[&quot;opposition&quot;], setup[&quot;models&quot;][&quot;judge&quot;]), (&quot;ruthless&quot;, &quot;fable&quot;))
+        self.assertIn(&quot;judge fable&quot;, lines[1])
+        code, lines = self.new(&quot;--last&quot;, &quot;--defense&quot;, &quot;opus&quot;)
+        setup = json.loads(gavel.read(os.path.join(lines[0], &quot;setup.json&quot;)))
+        self.assertEqual(setup[&quot;opposition&quot;], &quot;ruthless&quot;)         # remembered
+        self.assertEqual(setup[&quot;models&quot;][&quot;jury&quot;], &quot;haiku&quot;)        # remembered
+        self.assertEqual(setup[&quot;models&quot;][&quot;defense&quot;], &quot;opus&quot;)      # changed this time
+
+    def test_quick_means_three_jurors(self):
+        self.assertEqual(gavel.build_setup(&quot;Ship?&quot;, quick=True)[&quot;jurors&quot;], 3)
+
+
+class TestSlug(unittest.TestCase):
+    def test_long_motions_are_cut_at_a_word_boundary(self):
+        s = gavel.slug(&quot;Gavel should run a jury deliberation round by default after the blind vote&quot;)
+        self.assertLessEqual(len(s), 48)
+        self.assertTrue(s.endswith(&quot;-by&quot;), s)
+
+    def test_empty_motion_still_gets_a_name(self):
+        self.assertEqual(gavel.slug(&quot;???&quot;), &quot;case&quot;)
+
+
+class TestPretrial(CaseTest):
+    def test_good_pretrial_passes(self):
+        self.assertEqual(len(gavel.check_pretrial(self.case)[&quot;seats&quot;]), 3)
+
+    def test_bad_pretrial_lists_every_problem(self):
+        bad = dict(PRETRIAL, standard=&quot;vibes&quot;, seats=PRETRIAL[&quot;seats&quot;][:2], hypotheses=[{&quot;id&quot;: &quot;H1&quot;, &quot;text&quot;: &quot;x&quot;}])
+        self.put(&quot;pretrial.json&quot;, json.dumps(bad))
+        self.assertFix(lambda: gavel.check_pretrial(self.case), &quot;standard&quot;, &quot;seats&quot;, &quot;hypotheses&quot;)
+
+    def test_premortem_seat_is_required(self):
+        seats = [{&quot;seat&quot;: s, &quot;question&quot;: &quot;q&quot;} for s in (&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)]
+        self.put(&quot;pretrial.json&quot;, json.dumps(dict(PRETRIAL, seats=seats)))
+        self.assertFix(lambda: gavel.check_pretrial(self.case), &quot;premortem&quot;)
+
+    def test_the_judge_must_seat_the_jury_the_user_chose(self):
+        setup = gavel.build_setup(&quot;Ship?&quot;, seats=gavel.parse_seats(&quot;engineer, finance&quot;))
+        self.put(&quot;setup.json&quot;, json.dumps(setup))
+        self.assertFix(lambda: gavel.check_pretrial(self.case), &quot;exactly the ones the user chose&quot;)
+
+    def test_the_judge_must_seat_the_number_asked_for(self):
+        self.put(&quot;setup.json&quot;, json.dumps(gavel.build_setup(&quot;Ship?&quot;, jurors=4)))
+        self.assertFix(lambda: gavel.check_pretrial(self.case), &quot;asked for 4 seats, got 3&quot;)
+
+    def test_broken_json_is_named(self):
+        self.put(&quot;pretrial.json&quot;, &quot;{not json&quot;)
+        self.assertFix(lambda: gavel.check_pretrial(self.case), &quot;not valid JSON&quot;)
+
+
+class TestRecord(CaseTest):
+    def test_record_has_both_sides_and_never_the_sealed_prior(self):
+        self.speeches()
+        self.put(&quot;sealed-prior.md&quot;, &quot;SECRET PRIOR 40&quot;)
+        gavel.build_record(self.case, seed=1)
+        text = gavel.read(os.path.join(self.case, &quot;record.md&quot;))
+        self.assertIn(&quot;For the motion&quot;, text)
+        self.assertIn(&quot;Against the motion&quot;, text)
+        self.assertIn(&quot;Rebuttals&quot;, text)
+        self.assertNotIn(&quot;SECRET PRIOR&quot;, text)
+
+    def test_side_order_follows_the_seed(self):
+        self.speeches()
+        orders = {tuple(gavel.build_record(self.case, seed=s)) for s in range(20)}
+        self.assertEqual(len(orders), 2)  # both orders occur, so neither side always speaks first
+
+    def test_over_limit_speech_is_refused(self):
+        self.speeches(n_open=600)
+        self.assertFix(lambda: gavel.build_record(self.case), &quot;opening-for.md: 600 words&quot;, &quot;opening-against.md&quot;)
+
+    def test_one_sided_rebuttal_is_refused(self):
+        self.speeches(rebuttals=False)
+        self.put(&quot;rebuttal-for.md&quot;, &quot;word &quot; * 10)
+        self.assertFix(lambda: gavel.build_record(self.case), &quot;one side filed a rebuttal&quot;)
+
+    def test_quick_mode_without_rebuttals_is_fine(self):
+        self.speeches(rebuttals=False)
+        gavel.build_record(self.case)
+        self.assertNotIn(&quot;Rebuttals&quot;, gavel.read(os.path.join(self.case, &quot;record.md&quot;)))
+
+
+class TestTally(CaseTest):
+    def test_lean_for_with_a_strong_minority(self):
+        self.vote(1, ballot(&quot;engineer&quot;, &quot;adopt&quot;, 80, &quot;high&quot;))
+        self.vote(1, ballot(&quot;designer&quot;, &quot;adopt_with_conditions&quot;, 65))
+        self.vote(1, ballot(&quot;premortem&quot;, &quot;reject&quot;, 20, claims=(&quot;A2&quot;,), favors=&quot;against&quot;, grade=&quot;verified&quot;))
+        r, letters = gavel.tally(self.case, seed=3)
+        self.assertEqual(r[&quot;majority_side&quot;], &quot;for&quot;)
+        self.assertEqual(r[&quot;spread&quot;], &quot;lean&quot;)
+        self.assertEqual(r[&quot;probability&quot;][&quot;median&quot;], 65)
+        self.assertTrue(r[&quot;strong_minority&quot;])
+        self.assertEqual(r[&quot;minority&quot;][0][&quot;seat&quot;], &quot;premortem&quot;)
+        self.assertIn(&quot;same model (sonnet)&quot;, r[&quot;correlation_note&quot;])
+        packet = gavel.read(os.path.join(self.case, &quot;jury-packet.md&quot;))
+        self.assertIn(&quot;Juror A&quot;, packet)
+        self.assertEqual(len(letters), 3)
+
+    def test_mixed_juror_models_are_reported(self):
+        seats = gavel.parse_seats(&quot;engineer, designer: opus&quot;)
+        self.put(&quot;setup.json&quot;, json.dumps(gavel.build_setup(&quot;Ship?&quot;, seats=seats)))
+        for seat in (&quot;engineer&quot;, &quot;designer&quot;, &quot;premortem&quot;):
+            self.vote(1, ballot(seat))
+        r, _ = gavel.tally(self.case)
+        self.assertEqual(r[&quot;juror_models&quot;][&quot;designer&quot;], &quot;opus&quot;)
+        self.assertIn(&quot;2 models&quot;, r[&quot;correlation_note&quot;])
+
+    def test_bad_ballots_are_all_named(self):
+        self.vote(1, ballot(&quot;engineer&quot;, &quot;maybe&quot;, 140))
+        self.vote(1, dict(ballot(&quot;designer&quot;), scores={&quot;C1&quot;: 9}))
+        self.assertFix(lambda: gavel.tally(self.case), &quot;engineer.json: verdict&quot;, &quot;probability&quot;,
+                       &quot;designer.json: scores&quot;, &quot;round1/premortem.json: missing&quot;)
+
+    def test_condition_required_for_adopt_with_conditions(self):
+        b = ballot(&quot;engineer&quot;, &quot;adopt_with_conditions&quot;)
+        b[&quot;conditions&quot;] = []
+        self.vote(1, b)
+        self.vote(1, ballot(&quot;designer&quot;))
+        self.vote(1, ballot(&quot;premortem&quot;))
+        self.assertFix(lambda: gavel.tally(self.case), &quot;needs at least one condition&quot;)
+
+    def test_herding_in_round_two_falls_back_to_the_blind_vote(self):
+        self.vote(1, ballot(&quot;engineer&quot;, &quot;adopt&quot;, 80))
+        self.vote(1, ballot(&quot;designer&quot;, &quot;adopt&quot;, 75))
+        self.vote(1, ballot(&quot;premortem&quot;, &quot;reject&quot;, 20, claims=(&quot;A1&quot;,), favors=&quot;against&quot;))
+        self.vote(2, ballot(&quot;engineer&quot;, &quot;adopt&quot;, 80, flip_reason=&quot;&quot;))
+        self.vote(2, ballot(&quot;designer&quot;, &quot;adopt&quot;, 75, flip_reason=&quot;&quot;))
+        self.vote(2, ballot(&quot;premortem&quot;, &quot;adopt&quot;, 70, flip_reason=&quot;the others agree&quot;))
+        r, _ = gavel.tally(self.case)
+        self.assertEqual(r[&quot;round_used&quot;], 1)
+        self.assertEqual(r[&quot;sides&quot;][&quot;against&quot;], 1)
+        self.assertFalse(r[&quot;flips&quot;][0][&quot;justified&quot;])
+
+    def test_a_flip_that_names_a_new_point_is_kept(self):
+        self.vote(1, ballot(&quot;engineer&quot;, &quot;adopt&quot;, 80))
+        self.vote(1, ballot(&quot;designer&quot;, &quot;adopt&quot;, 75))
+        self.vote(1, ballot(&quot;premortem&quot;, &quot;reject&quot;, 20, claims=(&quot;A1&quot;,), favors=&quot;against&quot;))
+        self.vote(2, ballot(&quot;engineer&quot;, &quot;redesign&quot;, 35, flip_reason=&quot;Juror C showed A1 breaks the rollback&quot;))
+        self.vote(2, ballot(&quot;designer&quot;, &quot;adopt&quot;, 75, flip_reason=&quot;&quot;))
+        self.vote(2, ballot(&quot;premortem&quot;, &quot;reject&quot;, 20, claims=(&quot;A1&quot;,), favors=&quot;against&quot;, flip_reason=&quot;&quot;))
+        r, _ = gavel.tally(self.case)
+        self.assertEqual(r[&quot;round_used&quot;], 2)
+        self.assertTrue(r[&quot;flips&quot;][0][&quot;justified&quot;])
+
+
+class TestClose(CaseTest):
+    GOOD = (&quot;VERDICT: Adopt with conditions (confidence medium)\n\n## Ruling\nx\n## From my prior\nx\n&quot;
+            &quot;## Decisive evidence\nx\n## Dissent\nx\n## Conditions\nx\n## What would flip this\nx\n&quot;
+            &quot;## What to watch\nx\n## The vote\nx\n&quot;)
+
+    def test_good_ruling_closes_and_dockets_once(self):
+        self.put(&quot;ruling.md&quot;, self.GOOD)
+        self.assertEqual(gavel.close(self.case), (&quot;Adopt with conditions&quot;, &quot;medium&quot;))
+        gavel.close(self.case)
+        docket = gavel.read(os.path.join(self.base, &quot;docket.md&quot;))
+        self.assertEqual(docket.count(&quot;Adopt with conditions&quot;), 1)
+        self.assertEqual(gavel.list_cases(self.base)[0][1], &quot;Adopt with conditions&quot;)
+
+    def test_ruling_without_verdict_line_or_sections_is_refused(self):
+        self.put(&quot;ruling.md&quot;, &quot;I think it is fine.\n## Ruling\nok\n&quot;)
+        self.assertFix(lambda: gavel.close(self.case), &quot;first line&quot;, &quot;## Dissent&quot;, &quot;## What would flip this&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    unittest.main(verbosity=1)
+</code></pre></details>
 </article></div>
     </div>
   </div>
