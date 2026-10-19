@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<style>html{background:#141413;color-scheme:dark}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>George Murad, Financial Analyst</title>
 <meta name="description" content="Financial analyst portfolio: financial analysis, accounting, earned value, cost variances, government budgeting, Python and SQL, shown through practice case studies with their Excel models, plus the books and website of my own business.">
@@ -16,101 +15,107 @@
 <meta property="og:image:alt" content="George Murad, Financial Analyst">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://gbmurad.github.io/Portfolio/assets/media/og-card.jpg">
-<meta name="theme-color" content="#141413">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light">
+<style>html{background:#fff;color-scheme:light}</style>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<script>(function(d){d.classList.add("js");if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("motion");setTimeout(function(){if(!window.__site)d.classList.remove("js","motion")},3000)})(document.documentElement);</script>
-<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js">
-<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js">
-<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/DrawSVGPlugin.min.js">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=Poppins:wght@400;500;600;700&amp;display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=2e1d03be">
-
+<script>document.documentElement.classList.add("js");window.addEventListener("load",()=>{if(!window.__portfolioReady)document.documentElement.classList.remove("js")});try{if(localStorage.getItem("portfolio-appearance-v2")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<link rel="stylesheet" href="assets/css/site.css?v=95e08017">
 </head>
 <body class="page-home">
-
+<div class="scroll-progress" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap top__inner">
-    <a class="brand" href="index.html"><b>George Murad</b><span>Financial Analyst</span></a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
-    <nav aria-label="Main"><ul class="menu" id="menu"><li class="has-sub"><a href="strengths/">My Strengths</a><ul class="submenu"><li><a href="strengths/financial-analysis/">Financial Analysis and FP&amp;A</a></li><li><a href="strengths/accounting/">Accounting</a></li><li><a href="strengths/evm/">Earned Value Management (EVM)</a></li><li><a href="strengths/cost-analysis/">Cost and Variance Analysis</a></li><li><a href="strengths/government-budgeting/">Government Budgeting</a></li><li><a href="strengths/python/">Python for Finance</a></li><li><a href="strengths/data-sql/">Data and SQL</a></li><li class="submenu__all"><a href="case-studies/">All Case Studies</a></li></ul></li><li><a href="case-studies/">Case Studies</a></li><li class="has-sub"><a href="projects/">All Projects</a><ul class="submenu"><li><a href="escentials/">Escentials</a></li><li><a href="claude-skills/">Claude Skills</a></li><li><a href="greedy-gems/">Greedy Gems</a></li><li><a href="everything-bible/">Everything Bible</a></li></ul></li><li><a href="about/">About</a></li><li><a class="nav-contact" href="contact/">Contact</a></li></ul></nav>
+    <a class="brand" href="index.html"><span class="brand__mark" aria-hidden="true">gm</span><b>George Murad</b></a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-panel">Menu <span aria-hidden="true">＋</span></button>
+    <nav id="menu-panel" aria-label="Main">
+      <button class="menu-close" type="button">Close <span aria-hidden="true">×</span></button>
+      <ul class="menu" id="menu"><li class=""><a href="#home" data-section="home" aria-current="page">Home</a></li><li class="has-sub"><a href="#strengths" data-section="strengths">Strengths</a><ul class="submenu" aria-label="Strengths pages"><li><a href="strengths/">All Strengths</a></li><li><a href="strengths/financial-analysis/">Financial Analysis and FP&amp;A</a></li><li><a href="strengths/accounting/">Accounting</a></li><li><a href="strengths/evm/">Earned Value Management (EVM)</a></li><li><a href="strengths/cost-analysis/">Cost and Variance Analysis</a></li><li><a href="strengths/government-budgeting/">Government Budgeting</a></li><li><a href="strengths/python/">Python for Finance</a></li><li><a href="strengths/data-sql/">Data and SQL</a></li></ul></li><li class="has-sub"><a href="#work" data-section="cases">Case Studies</a><ul class="submenu" aria-label="Case Studies pages"><li><a href="case-studies/">All Case Studies</a></li><li><a href="aldercrest-aerospace/">Aldercrest Aerospace</a></li><li><a href="lumenpath-software/">Lumenpath Software</a></li><li><a href="saltbrush-beverage/">Saltbrush Beverage</a></li><li><a href="sunfield-kitchen/">Sunfield Kitchen</a></li><li><a href="palomar-vista/">Palomar Vista</a></li><li><a href="saltbrush-close/">Saltbrush Close</a></li><li><a href="escentials-llc/">Escentials Financial Statements</a></li></ul></li><li class="has-sub"><a href="#projects" data-section="projects">All Projects</a><ul class="submenu" aria-label="All Projects pages"><li><a href="projects/">All Projects</a></li><li><a href="escentials/">Escentials</a></li><li><a href="store/">Escentials Website</a></li><li><a href="claude-skills/">Claude Skills</a></li><li><a href="everything-bible/">Everything Bible</a></li><li><a href="projects/#rados">radOS</a></li></ul></li><li class=""><a href="#about" data-section="about">About</a></li><li class=""><a href="#contact" data-section="contact">Contact</a></li><li><a class="nav-resume" href="assets/media/George_Murad_Resume.pdf" download>Resume <span aria-hidden="true">↓</span></a></li></ul>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" hidden>Dark</button>
+    </nav>
   </div>
 </header>
-<main id="main" tabindex="-1">
-<div class="hero-stage" id="strengths"><section class="hero">
-  <div class="number-cloud" aria-hidden="true"><span class="number-cell world-0" style="--x:78.8%;--y:78.5%;--size:16px;--alpha:0.35;--near:0.40"><span>0.93</span></span><span class="number-cell world-1" style="--x:27.0%;--y:89.8%;--size:30px;--alpha:0.51;--near:0.40"><span>$184.3M</span></span><span class="number-cell world-2" style="--x:95.7%;--y:9.9%;--size:20px;--alpha:0.40;--near:0.94"><span>12.6%</span></span><span class="number-cell world-3" style="--x:16.2%;--y:73.6%;--size:34px;--alpha:0.55;--near:0.40"><span>$90.2M</span></span><span class="number-cell world-4" style="--x:4.4%;--y:17.8%;--size:24px;--alpha:0.44;--near:0.74"><span>105.3%</span></span><span class="number-cell world-5" style="--x:90.6%;--y:32.7%;--size:38px;--alpha:0.60;--near:0.40"><span>35.5%</span></span><span class="number-cell world-6" style="--x:82.7%;--y:19.2%;--size:28px;--alpha:0.49;--near:0.40"><span>$2.3M</span></span><span class="number-cell world-0" style="--x:91.2%;--y:44.1%;--size:18px;--alpha:0.37;--near:0.40"><span>18.6%</span></span><span class="number-cell world-1" style="--x:20.4%;--y:16.5%;--size:32px;--alpha:0.53;--near:0.40"><span>16.0%</span></span><span class="number-cell world-2" style="--x:4.5%;--y:68.7%;--size:22px;--alpha:0.42;--near:0.59"><span>0.93x</span></span><span class="number-cell world-3" style="--x:11.4%;--y:45.4%;--size:36px;--alpha:0.58;--near:0.40"><span>$202.7K</span></span><span class="number-cell world-4" style="--x:44.6%;--y:91.2%;--size:26px;--alpha:0.46;--near:0.40"><span>$120</span></span><span class="number-cell world-5" style="--x:4.3%;--y:53.1%;--size:16px;--alpha:0.35;--near:0.42"><span>$240</span></span><span class="number-cell world-6" style="--x:70.8%;--y:85.0%;--size:30px;--alpha:0.51;--near:0.40"><span>$360</span></span><span class="number-cell world-0" style="--x:8.3%;--y:86.4%;--size:20px;--alpha:0.40;--near:0.83"><span>$480</span></span><span class="number-cell world-1" style="--x:96.0%;--y:84.1%;--size:34px;--alpha:0.55;--near:0.95"><span>$640</span></span><span class="number-cell world-2" style="--x:95.3%;--y:69.4%;--size:24px;--alpha:0.44;--near:0.59"><span>$840</span></span><span class="number-cell world-3" style="--x:81.0%;--y:7.4%;--size:38px;--alpha:0.60;--near:0.43"><span>1,250</span></span><span class="number-cell world-4" style="--x:70.5%;--y:92.8%;--size:28px;--alpha:0.49;--near:0.40"><span>7,200</span></span><span class="number-cell world-5" style="--x:8.8%;--y:33.4%;--size:18px;--alpha:0.37;--near:0.40"><span>320</span></span><span class="number-cell world-6" style="--x:19.9%;--y:83.4%;--size:32px;--alpha:0.53;--near:0.40"><span>0.93</span></span><span class="number-cell world-0" style="--x:6.9%;--y:6.5%;--size:22px;--alpha:0.42;--near:0.92"><span>$184.3M</span></span><span class="number-cell world-1" style="--x:93.2%;--y:51.9%;--size:36px;--alpha:0.58;--near:0.40"><span>12.6%</span></span><span class="number-cell world-2" style="--x:23.3%;--y:7.0%;--size:26px;--alpha:0.46;--near:0.40"><span>$90.2M</span></span><span class="number-cell world-3" style="--x:85.9%;--y:62.2%;--size:16px;--alpha:0.35;--near:0.40"><span>105.3%</span></span><span class="number-cell world-4" style="--x:10.1%;--y:61.7%;--size:30px;--alpha:0.51;--near:0.40"><span>35.5%</span></span><span class="number-cell world-5" style="--x:83.6%;--y:87.9%;--size:20px;--alpha:0.40;--near:0.56"><span>$2.3M</span></span><span class="number-cell world-6" style="--x:5.8%;--y:78.7%;--size:34px;--alpha:0.55;--near:0.73"><span>18.6%</span></span><span class="number-cell number-cell--small world-0" style="--x:12.8%;--y:90.8%;--size:12px;--alpha:0.24;--near:0.94"><span>4.2%</span></span><span class="number-cell number-cell--small world-1" style="--x:60.8%;--y:89.6%;--size:13px;--alpha:0.29;--near:0.40"><span>0.87</span></span><span class="number-cell number-cell--small world-2" style="--x:93.5%;--y:18.7%;--size:14px;--alpha:0.34;--near:0.77"><span>1.04</span></span><span class="number-cell number-cell--small world-3" style="--x:16.2%;--y:25.0%;--size:15px;--alpha:0.24;--near:0.40"><span>$12.4K</span></span><span class="number-cell number-cell--small world-4" style="--x:3.1%;--y:11.3%;--size:12px;--alpha:0.29;--near:1.00"><span>$3,180</span></span><span class="number-cell number-cell--small world-5" style="--x:13.2%;--y:9.4%;--size:13px;--alpha:0.34;--near:0.72"><span>92</span></span><span class="number-cell number-cell--small world-6" style="--x:75.4%;--y:13.3%;--size:14px;--alpha:0.24;--near:0.40"><span>1.8x</span></span><span class="number-cell number-cell--small world-0" style="--x:23.3%;--y:77.8%;--size:15px;--alpha:0.29;--near:0.40"><span>7.5%</span></span><span class="number-cell number-cell--small world-1" style="--x:89.2%;--y:78.2%;--size:12px;--alpha:0.34;--near:0.64"><span>$56K</span></span><span class="number-cell number-cell--small world-2" style="--x:14.3%;--y:55.3%;--size:13px;--alpha:0.24;--near:0.40"><span>0.98</span></span><span class="number-cell number-cell--small world-3" style="--x:94.1%;--y:25.3%;--size:14px;--alpha:0.29;--near:0.66"><span>2.1%</span></span><span class="number-cell number-cell--small world-4" style="--x:37.9%;--y:5.0%;--size:15px;--alpha:0.34;--near:0.40"><span>$1.2M</span></span><span class="number-cell number-cell--small world-5" style="--x:22.4%;--y:93.9%;--size:12px;--alpha:0.24;--near:0.71"><span>61</span></span><span class="number-cell number-cell--small world-6" style="--x:65.0%;--y:8.5%;--size:13px;--alpha:0.29;--near:0.40"><span>3.4x</span></span><span class="number-cell number-cell--small world-0" style="--x:34.1%;--y:86.8%;--size:14px;--alpha:0.34;--near:0.40"><span>$740</span></span><span class="number-cell number-cell--small world-1" style="--x:89.5%;--y:57.1%;--size:15px;--alpha:0.24;--near:0.40"><span>9.8%</span></span><span class="number-cell number-cell--small world-2" style="--x:96.8%;--y:40.0%;--size:12px;--alpha:0.29;--near:0.62"><span>0.12</span></span><span class="number-cell number-cell--small world-3" style="--x:96.4%;--y:63.8%;--size:13px;--alpha:0.34;--near:0.70"><span>$18K</span></span><span class="number-cell number-cell--small world-4" style="--x:4.2%;--y:42.8%;--size:14px;--alpha:0.24;--near:0.55"><span>450</span></span><span class="number-cell number-cell--small world-5" style="--x:78.4%;--y:93.8%;--size:15px;--alpha:0.29;--near:0.73"><span>1.6%</span></span></div>
+<main id="main" tabindex="-1"><section class="hero" id="home" data-nav-section="home"><div class="section-color" data-parallax aria-hidden="true"></div>
+  <div class="hero__shapes" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap hero__inner">
     <div class="hero__copy">
-      <div class="hero__eyebrow"><span class="kicker">Financial Analyst</span></div>
-      <h1>George Murad</h1>
-      <div class="hero__support"><p class="hero__availability">Open to Roles Anywhere in the US</p><p class="intro">Financial analysis, accounting and the Python behind them, shown through practice case studies
-      with full statements and the Excel models that build them.</p>
-      <div class="actions">
-        <a class="button" href="#strengths">See My Strengths <span class="arr" aria-hidden="true">&rarr;</span></a>
-        <a class="link" href="#contact">Contact Me <span class="arr" aria-hidden="true">&rarr;</span></a>
-      </div></div>
+      <span class="kicker" data-hero-enter style="--enter-delay:0ms">Financial Analyst</span>
+      <h1><span class="hero-word-mask"><span data-hero-enter style="--enter-delay:90ms">Hi,</span></span> <span class="hero-word-mask"><span data-hero-enter style="--enter-delay:180ms">I'm</span></span><br><span class="hero-word-mask hero-name"><span data-hero-enter style="--enter-delay:270ms">George.</span></span></h1>
+      <p class="intro" data-hero-enter style="--enter-delay:360ms">I build financial models and explain the story behind the numbers.</p>
+      <div class="actions" data-hero-enter style="--enter-delay:450ms">
+        <a class="button" href="#work">See my work <span aria-hidden="true">↗</span></a>
+        <a class="button button--secondary" href="assets/media/George_Murad_Resume.pdf" download>Resume <span aria-hidden="true">↓</span></a>
+      </div>
+      <ul class="hero__skills" aria-label="Areas of work and AI tools">
+        <li data-hero-enter="chip" style="--enter-delay:540ms">Finance</li>
+        <li data-hero-enter="chip" style="--enter-delay:630ms">Accounting</li>
+        <li data-hero-enter="chip" style="--enter-delay:720ms">Python &amp; SQL</li>
+        <li class="hero__ai hero__ai--claude" data-hero-enter="chip" style="--enter-delay:810ms">Claude</li>
+        <li class="hero__ai hero__ai--gpt" data-hero-enter="chip" style="--enter-delay:900ms">GPT</li>
+      </ul>
     </div>
+    <figure class="hero__portrait" data-hero-enter="photo" style="--enter-delay:180ms">
+      <div class="portrait-shape" aria-hidden="true"><i></i><i></i><i></i></div>
+      <img src="assets/media/george.jpg" alt="George Murad" width="800" height="800" fetchpriority="high">
+      <figcaption>A finance mind.<br>A builder at heart.</figcaption>
+    </figure>
   </div>
-  <div class="decision" aria-hidden="true">
-    <span class="decision__flash"></span><span class="decision__point"></span>
-  </div>
-  <button class="scene-pause" type="button" aria-pressed="false">Pause</button>
-</section><section class="section section--strengths">
+  <div class="wrap hero__bottom"><span>Thoughtful analysis. Clear explanations.</span></div>
+</section>
+<section class="section section--band" id="strengths" data-nav-section="strengths"><div class="section-color" data-parallax aria-hidden="true"></div>
   <div class="wrap">
-    <div class="shead" data-reveal><span class="shead__rule" aria-hidden="true"></span><span class="n">01</span><h2>My Strengths</h2><p>Seven kinds of finance work, each with the case studies and samples that prove it.</p></div>
-    <ol class="s-grid"><li class="s-card world-0" data-reveal style="--i:0"><a href="strengths/financial-analysis/">
-  <svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 26V6M5 26h23M10 22v-7h4v7m4 0V9h4v13m-12-12 6-5 7 3 5-5"/></svg>
+    <header class="section-heading" data-reveal><span class="kicker">What I bring</span><h2>Good with numbers.<br>Better with the whole picture.</h2><p>Seven kinds of finance work, each with the case studies and samples that prove it.</p></header>
+    <ol class="s-grid"><li class="s-card tone-blue" data-reveal style="--i:0"><a href="strengths/financial-analysis/">
+  <span class="icon-tile"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 26V6M5 26h23M10 22v-7h4v7m4 0V9h4v13m-12-12 6-5 7 3 5-5"/></svg></span>
   <div class="s-card__copy">
   <h3>Financial Analysis and FP&amp;A</h3>
   <p>Three statement models, forecasts and variance analysis.</p>
   <ul class="s-card__skills"><li>Three Statement Modeling</li><li>Driver Based Forecasting</li><li>Budget versus Actual</li></ul>
   <span class="s-card__go">See the work <span class="arr" aria-hidden="true">&rarr;</span></span>
   </div>
-</a></li><li class="s-card world-1" data-reveal style="--i:1"><a href="strengths/accounting/">
-  <svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h22v23H5zM16 5v23M8 11h5m6 0h5M8 17h5m6 0h5M8 23h5m6 0h5"/></svg>
+</a></li><li class="s-card tone-green" data-reveal style="--i:1"><a href="strengths/accounting/">
+  <span class="icon-tile"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h22v23H5zM16 5v23M8 11h5m6 0h5M8 17h5m6 0h5M8 23h5m6 0h5"/></svg></span>
   <div class="s-card__copy">
   <h3>Accounting</h3>
   <p>Journal entries, reconciliations and an adjusted trial balance.</p>
   <ul class="s-card__skills"><li>Month End Close</li><li>Journal Entries</li><li>Account Reconciliations</li></ul>
   <span class="s-card__go">See the work <span class="arr" aria-hidden="true">&rarr;</span></span>
   </div>
-</a></li><li class="s-card world-2" data-reveal style="--i:2"><a href="strengths/evm/">
-  <svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 26V7m0 19h24M8 23l7-8 6 2 7-12M8 18l7-7 6 1 7-8"/></svg>
+</a></li><li class="s-card tone-orange" data-reveal style="--i:2"><a href="strengths/evm/">
+  <span class="icon-tile"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 26V7m0 19h24M8 23l7-8 6 2 7-12M8 18l7-7 6 1 7-8"/></svg></span>
   <div class="s-card__copy">
   <h3>Earned Value Management (EVM)</h3>
   <p>Program cost and schedule performance: CPI, SPI, EAC and TCPI.</p>
   <ul class="s-card__skills"><li>CPI and SPI</li><li>Estimate at Completion</li><li>TCPI</li></ul>
   <span class="s-card__go">See the work <span class="arr" aria-hidden="true">&rarr;</span></span>
   </div>
-</a></li><li class="s-card world-3" data-reveal style="--i:3"><a href="strengths/cost-analysis/">
-  <svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h25M6 25V10h4v15m4-10V7h4v8m4 8V12h4v11M10 10h4m4 5h4"/></svg>
+</a></li><li class="s-card tone-purple" data-reveal style="--i:3"><a href="strengths/cost-analysis/">
+  <span class="icon-tile"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h25M6 25V10h4v15m4-10V7h4v8m4 8V12h4v11M10 10h4m4 5h4"/></svg></span>
   <div class="s-card__copy">
   <h3>Cost and Variance Analysis</h3>
   <p>Standard costs, variances and the gross profit bridge.</p>
   <ul class="s-card__skills"><li>Standard Costing</li><li>Price and Usage Variances</li><li>Gross Profit Bridge</li></ul>
   <span class="s-card__go">See the work <span class="arr" aria-hidden="true">&rarr;</span></span>
   </div>
-</a></li><li class="s-card world-4" data-reveal style="--i:4"><a href="strengths/government-budgeting/">
-  <svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l12-7 12 7H4m3 4v10m6-10v10m6-10v10m6-10v10M4 28h24"/></svg>
+</a></li><li class="s-card tone-pink" data-reveal style="--i:4"><a href="strengths/government-budgeting/">
+  <span class="icon-tile"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l12-7 12 7H4m3 4v10m6-10v10m6-10v10m6-10v10M4 28h24"/></svg></span>
   <div class="s-card__copy">
   <h3>Government Budgeting</h3>
   <p>A city General Fund: budget to actual, reserves and a forecast.</p>
   <ul class="s-card__skills"><li>Fund Accounting</li><li>Budget to Actual</li><li>Reserve Policy</li></ul>
   <span class="s-card__go">See the work <span class="arr" aria-hidden="true">&rarr;</span></span>
   </div>
-</a></li><li class="s-card world-5" data-reveal style="--i:5"><a href="strengths/python/">
-  <svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 9l-7 7 7 7m10-14 7 7-7 7M18 5l-4 22"/></svg>
+</a></li><li class="s-card tone-teal" data-reveal style="--i:5"><a href="strengths/python/">
+  <span class="icon-tile"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 9l-7 7 7 7m10-14 7 7-7 7M18 5l-4 22"/></svg></span>
   <div class="s-card__copy">
   <h3>Python for Finance</h3>
   <p>pandas analyses on the case data: ratios, flags, simulations.</p>
   <ul class="s-card__skills"><li>pandas</li><li>NumPy</li><li>matplotlib</li></ul>
   <span class="s-card__go">See the work <span class="arr" aria-hidden="true">&rarr;</span></span>
   </div>
-</a></li><li class="s-card world-6" data-reveal style="--i:6"><a href="strengths/data-sql/">
-  <svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8c0-6 22-6 22 0s-22 6-22 0v16c0 6 22 6 22 0V8M5 16c0 6 22 6 22 0"/></svg>
+</a></li><li class="s-card tone-blue" data-reveal style="--i:6"><a href="strengths/data-sql/">
+  <span class="icon-tile"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8c0-6 22-6 22 0s-22 6-22 0v16c0 6 22 6 22 0V8M5 16c0 6 22 6 22 0"/></svg></span>
   <div class="s-card__copy">
   <h3>Data and SQL</h3>
   <p>SQL, customer segments, cohorts and dashboards.</p>
@@ -118,64 +123,80 @@
   <span class="s-card__go">See the work <span class="arr" aria-hidden="true">&rarr;</span></span>
   </div>
 </a></li></ol>
+    <a class="link section-link" href="strengths/">Explore All Strengths <span aria-hidden="true">↗</span></a>
   </div>
-</section></div><div class="stage-extra" aria-hidden="true"></div><section class="section" id="work">
+</section>
+<section class="section" id="work" data-nav-section="cases"><div class="section-color" data-parallax aria-hidden="true"></div>
   <div class="wrap">
-    <div class="shead" data-reveal><span class="shead__rule" aria-hidden="true"></span><span class="n">02</span><h2>Practice Case Studies</h2><p>Fictional companies, each built to practice one kind of finance work for the roles I am applying for. Every one comes with its Excel model, formulas and all.</p></div>
+    <header class="section-heading" data-reveal><span class="kicker">The finance work</span><h2>From the model<br>to the meaning.</h2><p>Financial analysis, accounting and the Python behind them, shown through practice case studies with full statements and the Excel models that build them.</p><p class="section-note">Fictional companies, each built to practice one kind of finance work. Every one comes with its Excel model, formulas and all.</p></header>
     <div class="cases__labels" aria-hidden="true"><span>No.</span><span>Company</span><span>What It Covers</span><span></span></div>
     <ol class="cases">
-<li data-reveal style="--i:0"><a class="case-row" href="aldercrest-aerospace/">
-  <span class="no">01</span>
+<li class="tone-blue" data-reveal><a class="case-row" href="aldercrest-aerospace/">
+  <span class="case-icon icon-tile" aria-hidden="true"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 26V6M5 26h23M10 22v-7h4v7m4 0V9h4v13m-12-12 6-5 7 3 5-5"/></svg></span>
   <div class="name"><h3>Aldercrest Aerospace</h3><span class="focus">Practice Case: Earned Value Management (EVM)</span><span class="ind">Aerospace and Defense Supplier, Fictional<sup>1</sup></span></div>
   <span class="what">Earned Value Management, Contract Economics, Backlog Analysis</span>
   <span class="case-row__go">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
 </a></li>
-<li data-reveal style="--i:1"><a class="case-row" href="lumenpath-software/">
-  <span class="no">02</span>
+<li class="tone-purple" data-reveal><a class="case-row" href="lumenpath-software/">
+  <span class="case-icon icon-tile" aria-hidden="true"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h22v23H5zM16 5v23M8 11h5m6 0h5M8 17h5m6 0h5M8 23h5m6 0h5"/></svg></span>
   <div class="name"><h3>Lumenpath Software</h3><span class="focus">Practice Case: SaaS Metrics and DCF Valuation</span><span class="ind">Business Software (Software as a Service), Fictional<sup>2</sup></span></div>
   <span class="what">SaaS Metrics, Discounted Cash Flow, Unit Economics</span>
   <span class="case-row__go">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
 </a></li>
-<li data-reveal style="--i:2"><a class="case-row" href="saltbrush-beverage/">
-  <span class="no">03</span>
+<li class="tone-orange" data-reveal><a class="case-row" href="saltbrush-beverage/">
+  <span class="case-icon icon-tile" aria-hidden="true"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 26V7m0 19h24M8 23l7-8 6 2 7-12M8 18l7-7 6 1 7-8"/></svg></span>
   <div class="name"><h3>Saltbrush Beverage</h3><span class="focus">Practice Case: Standard Costing and Variance Analysis</span><span class="ind">Consumer Products Manufacturer (Beverages), Fictional<sup>3</sup></span></div>
   <span class="what">Standard Costing, Variance Analysis, Cash Forecasting</span>
   <span class="case-row__go">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
 </a></li>
-<li data-reveal style="--i:3"><a class="case-row" href="sunfield-kitchen/">
-  <span class="no">04</span>
+<li class="tone-green" data-reveal><a class="case-row" href="sunfield-kitchen/">
+  <span class="case-icon icon-tile" aria-hidden="true"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h25M6 25V10h4v15m4-10V7h4v8m4 8V12h4v11M10 10h4m4 5h4"/></svg></span>
   <div class="name"><h3>Sunfield Kitchen Group</h3><span class="focus">Practice Case: Unit Economics and Cohort Analysis</span><span class="ind">Restaurants (Fast Casual), Fictional<sup>4</sup></span></div>
   <span class="what">Unit Economics, Cohort Analysis, Budget Variance</span>
   <span class="case-row__go">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
 </a></li>
-<li data-reveal style="--i:4"><a class="case-row" href="palomar-vista/">
-  <span class="no">05</span>
+<li class="tone-teal" data-reveal><a class="case-row" href="palomar-vista/">
+  <span class="case-icon icon-tile" aria-hidden="true"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l12-7 12 7H4m3 4v10m6-10v10m6-10v10m6-10v10M4 28h24"/></svg></span>
   <div class="name"><h3>City of Palomar Vista</h3><span class="focus">Practice Case: Government Budgeting and Fund Accounting</span><span class="ind">Local Government, Fictional<sup>5</sup></span></div>
   <span class="what">Budget to Actual Variance, Reserve Policy, Multi Year Forecasting</span>
   <span class="case-row__go">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
 </a></li>
-<li data-reveal style="--i:5"><a class="case-row" href="saltbrush-close/">
-  <span class="no">06</span>
+<li class="tone-pink" data-reveal><a class="case-row" href="saltbrush-close/">
+  <span class="case-icon icon-tile" aria-hidden="true"><svg class="strength-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 9l-7 7 7 7m10-14 7 7-7 7M18 5l-4 22"/></svg></span>
   <div class="name"><h3>Saltbrush Close</h3><span class="focus">Practice Case: Month End Close</span><span class="ind">Consumer Products Manufacturer (Beverages), Fictional<sup>6</sup></span></div>
   <span class="what">Journal Entries, Account Reconciliations, Accruals and Prepaids</span>
   <span class="case-row__go">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
 </a></li>
     </ol>
   </div>
-</section><section class="section process-scene">
+</section>
+<section class="section section--band" data-nav-section="cases"><div class="section-color" data-parallax aria-hidden="true"></div>
   <div class="wrap">
-    <div class="shead" data-reveal><span class="shead__rule" aria-hidden="true"></span><span class="n">03</span><h2>How I Work</h2><p>The same five steps behind every case study here, and behind the work I would do for you.</p></div>
+    <header class="section-heading" data-reveal><span class="kicker">How I work</span><h2>Curiosity in.<br>Clarity out.</h2><p>The same five steps behind every case study here, and behind the work I would do for you.</p></header>
     <ol class="pipe">
-      <li><small>Step 1</small><b>Pull the Data</b><span>Transactions into a database, shaped with SQL and checked against the source.</span></li>
-      <li><small>Step 2</small><b>Build the Model</b><span>Three linked statements in Excel, with every input in one place.</span></li>
-      <li><small>Step 3</small><b>Make It Tie</b><span>Checks on every statement, so an error shows up before anyone reads the report.</span></li>
-      <li><small>Step 4</small><b>Find the Story</b><span>Variances, trends and ratios that explain what changed and why.</span></li>
-      <li><small>Step 5</small><b>Present It</b><span>A short memo, a dashboard or a deck that someone outside finance can follow.</span></li>
+      <li><small>01</small><b>Pull the Data</b><span>Transactions into a database, shaped with SQL and checked against the source.</span></li>
+      <li><small>02</small><b>Build the Model</b><span>Three linked statements in Excel, with every input in one place.</span></li>
+      <li><small>03</small><b>Make It Tie</b><span>Checks on every statement, so an error shows up before anyone reads the report.</span></li>
+      <li><small>04</small><b>Find the Story</b><span>Variances, trends and ratios that explain what changed and why.</span></li>
+      <li><small>05</small><b>Present It</b><span>A short memo, a dashboard or a deck that someone outside finance can follow.</span></li>
     </ol>
   </div>
-</section><section class="section section--panel spec-scene" id="about">
+</section>
+<section class="section" id="projects" data-nav-section="projects"><div class="section-color" data-parallax aria-hidden="true"></div>
   <div class="wrap">
-    <div class="shead" data-reveal><span class="shead__rule" aria-hidden="true"></span><span class="n">04</span><h2>About Me</h2></div>
+    <header class="section-heading" data-reveal><span class="kicker">Beyond the spreadsheets</span><h2>I like making things.</h2><p>My <span class="nw">e-commerce</span> business, software and creative work.</p></header>
+    <div class="featured-stage"><div class="home-products">
+      <a class="product-teaser tone-orange" href="escentials/" data-reveal><div class="product-teaser__image"><img src="assets/media/store-banner.jpg" alt="The Escentials store showing designer fragrance and its price" width="1400" height="488" loading="lazy"></div><div><span class="kicker">My business</span><h3>Escentials <span aria-hidden="true">↗</span></h3><p>The books, the website and Car Perfume.</p><ul class="project-tags" aria-label="Project features"><li>Two product lines</li><li>Shopify store</li><li>FY2025 books</li></ul></div></a>
+      <a class="product-teaser tone-purple" href="projects/#rados" data-reveal><div class="product-teaser__image"><img src="assets/media/radOS/radOS-home.jpg" alt="The radOS home screen on an Android TV box" width="1920" height="1080" loading="lazy"></div><div><span class="kicker">Android TV software</span><h3>radOS <span aria-hidden="true">↗</span></h3><p>The whole TV, rebuilt.</p><ul class="project-tags" aria-label="Project features"><li>Home screen</li><li>Rad Browser</li><li>Glass Keys</li></ul></div></a>
+    </div>
+    </div>
+    <p class="projects-more">Also in the mix: Claude Skills and Everything Bible.</p>
+    <a class="link" href="projects/">Explore All Projects <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
+<section class="section section--band" id="about" data-nav-section="about"><div class="section-color" data-parallax aria-hidden="true"></div>
+  <div class="wrap">
+    <header class="section-heading" data-reveal><span class="kicker">A little about me</span><h2>The person behind the work.</h2></header>
     <article class="resume resume--home"><header class="resume__head" data-reveal>
       <div class="resume__id">
         <img class="resume__photo" src="assets/media/george.jpg" alt="George Murad" loading="lazy">
@@ -185,56 +206,54 @@
         variance reports, and I explain the numbers to people outside finance.</p>
       </div>
       <dl class="resume__meta">
-        <div><dt>Looking For</dt><dd>Financial Analyst Roles in FP&amp;A, Program Finance or Government Budgeting</dd></div>
-        <div><dt>Where</dt><dd>Anywhere in the US, or Remote</dd></div>
         <div><dt>Contact</dt><dd><a href="mailto:georgebasilmurad@gmail.com">georgebasilmurad@gmail.com</a></dd></div>
       </dl>
       <a class="button resume__download" href="assets/media/George_Murad_Resume.pdf" download>Download Resume <span class="arr" aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="resume__body">
-    <section class="resume__sec" data-reveal>
-      <h2>Experience</h2>
+    <section class="resume__sec" data-reveal><div class="section-color" data-parallax aria-hidden="true"></div>
+      <h3>Experience</h3>
       <div>
         <div class="job">
-          <div class="job__top"><h3>Specialist</h3><span class="job__when">Aug 2025 to Present</span></div>
+          <div class="job__top"><h4>Specialist</h4><span class="job__when">Aug 2025 to Present</span></div>
           <p class="job__org">Apple Inc.</p>
           <ul><li>Train and onboard new Specialists.</li>
           <li>Benchmarked AppleCare pricing and coverage against competitor warranty products, and turned the cost versus repair risk tradeoff into clear recommendations for customers.</li></ul>
         </div>
         <div class="job">
-          <div class="job__top"><h3>Financial Analyst</h3><span class="job__when">Apr 2025 to Feb 2026</span></div>
+          <div class="job__top"><h4>Financial Analyst</h4><span class="job__when">Apr 2025 to Feb 2026</span></div>
           <p class="job__org">Escentials LLC, my <span class="nw">e-commerce</span> business</p>
           <ul><li>Built monthly revenue and cost forecasts in Excel for operating expense planning and cash flow.</li>
           <li>Prepared budget versus actual variance reports on cost drivers and margin trends.</li>
           <li>Built KPI dashboards in Excel and Power BI that replaced manual reporting.</li></ul>
         </div>
         <div class="job">
-          <div class="job__top"><h3>Financial Analyst</h3><span class="job__when">Mar 2022 to Feb 2025</span></div>
-          <p class="job__org">Independent E-Commerce Operations</p>
+          <div class="job__top"><h4>Financial Analyst</h4><span class="job__when">Mar 2022 to Feb 2025</span></div>
+          <p class="job__org">Independent <span class="nw">e-commerce</span> Operations</p>
           <ul><li>Built forecasting models for revenue, cost of goods sold and gross margin across an <span class="nw">e-commerce</span> operation with $200K in annual revenue.</li>
           <li>Tracked product margins and ran trend and variance analysis to guide pricing and inventory decisions.</li></ul>
         </div>
       </div>
     </section>
-    <section class="resume__sec" data-reveal>
-      <h2>Education</h2>
+    <section class="resume__sec" data-reveal><div class="section-color" data-parallax aria-hidden="true"></div>
+      <h3>Education</h3>
       <div>
         <div class="job">
-          <div class="job__top"><h3>Bachelor of Arts in Finance</h3><span class="job__when">2023 to 2025</span></div>
+          <div class="job__top"><h4>Bachelor of Arts in Finance</h4><span class="job__when">2023 to 2025</span></div>
           <p class="job__org">California State University, Dominguez Hills</p>
         </div>
         <div class="job">
-          <div class="job__top"><h3>Associate of Arts in Business Administration</h3><span class="job__when">2020 to 2022</span></div>
+          <div class="job__top"><h4>Associate of Arts in Business Administration</h4><span class="job__when">2020 to 2022</span></div>
           <p class="job__org">Fullerton College</p>
         </div>
       </div>
     </section>
-    <section class="resume__sec" data-reveal>
-      <h2>Certifications</h2>
+    <section class="resume__sec" data-reveal><div class="section-color" data-parallax aria-hidden="true"></div>
+      <h3>Certifications</h3>
       <ul class="resume__list"><li>Excel Advanced Certification</li><li>Power BI Data Analyst Certification</li><li>CPA Exam, Studying</li></ul>
     </section>
-    <section class="resume__sec" data-reveal>
-      <h2>Skills</h2>
+    <section class="resume__sec" data-reveal><div class="section-color" data-parallax aria-hidden="true"></div>
+      <h3>Skills</h3>
       <dl class="skills">
         <div><dt>Finance</dt><dd>Financial Modeling and Forecasting · Budget Development and Budget to Actual · Variance and Trend Analysis · Cash Flow Analysis · Financial Reporting · Earned Value Management · OpEx and CapEx Reporting</dd></div>
         <div><dt>Tools</dt><dd>Excel (XLOOKUP, INDEX and MATCH, PivotTables, Macros) · Power BI · Tableau · SQL · Python (pandas, NumPy)</dd></div>
@@ -245,11 +264,11 @@
   </div>
 </section>
 </main>
-<footer class="foot" id="contact">
+<div class="footer-scene"><footer class="foot" id="contact" data-nav-section="contact">
   <div class="wrap">
     <div class="foot__grid">
       <div>
-        <h2>Get in Touch</h2>
+        <h2 data-reveal>Get in Touch</h2>
         <a class="mail email-pill" href="mailto:georgebasilmurad@gmail.com">georgebasilmurad@gmail.com</a>
         <p class="note"><a href="assets/media/George_Murad_Resume.pdf" download>Download Resume</a></p>
       </div>
@@ -270,11 +289,7 @@
       <a href="#portfolio-note" aria-label="Portfolio footnote">&#8593;</a>
     </div>
   </div>
-</footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/DrawSVGPlugin.min.js" defer></script>
-<script src="assets/js/site.js?v=54e3306a" defer></script>
+</footer></div>
+<script src="assets/js/site.js?v=76be0eab" defer></script>
 </body>
 </html>
