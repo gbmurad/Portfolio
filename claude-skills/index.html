@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Claude Skills, George Murad</title>
-<meta name="description" content="Free tools George Murad builds for Claude Code: how a skill works, what each one does, and its full code to read, download or install with one command.">
+<meta name="description" content="Claude Skills: Small tools I build for Claude Code, free for anyone to download and use. Open source on GitHub">
 <meta name="author" content="George Murad">
 <meta property="og:title" content="Claude Skills, George Murad">
-<meta property="og:description" content="Free tools George Murad builds for Claude Code: how a skill works, what each one does, and its full code to read, download or install with one command.">
+<meta property="og:description" content="Claude Skills: Small tools I build for Claude Code, free for anyone to download and use. Open source on GitHub">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://gbmurad.github.io/Portfolio/assets/media/og-card.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,7 +22,7 @@
 <link rel="icon" href="../assets/media/icons/favicon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="../assets/media/icons/apple-touch-icon.png">
 <script>document.documentElement.classList.add("js");window.addEventListener("load",()=>{if(!window.__portfolioReady)document.documentElement.classList.remove("js")});try{if(localStorage.getItem("portfolio-appearance-v2")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/site.css?v=7fbacc39">
+<link rel="stylesheet" href="../assets/css/site.css?v=55a43011">
 </head>
 <body class="page-projects">
 <div class="scroll-progress" aria-hidden="true"></div>
@@ -33,45 +33,63 @@
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-panel">Menu <span aria-hidden="true">＋</span></button>
     <nav id="menu-panel" aria-label="Main">
       <button class="menu-close" type="button">Close <span aria-hidden="true">×</span></button>
-      <ul class="menu" id="menu"><li class=""><a href="../index.html" data-section="home">Home</a></li><li class="has-sub"><a href="../strengths/" data-section="strengths">Strengths</a><ul class="submenu" aria-label="Strengths pages"><li><a href="../strengths/">All Strengths</a></li><li><a href="../strengths/financial-analysis/">Financial Analysis and FP&amp;A</a></li><li><a href="../strengths/accounting/">Accounting</a></li><li><a href="../strengths/evm/">Earned Value Management (EVM)</a></li><li><a href="../strengths/cost-analysis/">Cost and Variance Analysis</a></li><li><a href="../strengths/government-budgeting/">Government Budgeting</a></li><li><a href="../strengths/python/">Python for Finance</a></li><li><a href="../strengths/data-sql/">Data and SQL</a></li></ul></li><li class="has-sub"><a href="../case-studies/" data-section="cases">Case Studies</a><ul class="submenu" aria-label="Case Studies pages"><li><a href="../case-studies/">All Case Studies</a></li><li><a href="../aldercrest-aerospace/">Aldercrest Aerospace</a></li><li><a href="../lumenpath-software/">Lumenpath Software</a></li><li><a href="../saltbrush-beverage/">Saltbrush Beverage</a></li><li><a href="../sunfield-kitchen/">Sunfield Kitchen</a></li><li><a href="../palomar-vista/">Palomar Vista</a></li><li><a href="../saltbrush-close/">Saltbrush Close</a></li><li><a href="../escentials-llc/">Escentials Financial Statements</a></li></ul></li><li class="has-sub"><a href="../projects/" data-section="projects" aria-current="page">All Projects</a><ul class="submenu" aria-label="All Projects pages"><li><a href="../projects/">All Projects</a></li><li><a href="../escentials/">Escentials</a></li><li><a href="../store/">Escentials Website</a></li><li><a href="../claude-skills/">Claude Skills</a></li><li><a href="../everything-bible/">Everything Bible</a></li><li><a href="../projects/#rados">radOS</a></li></ul></li><li class=""><a href="../about/" data-section="about">About</a></li><li class=""><a href="../contact/" data-section="contact">Contact</a></li><li><a class="nav-resume" href="../assets/media/George_Murad_Resume.pdf" download>Resume <span aria-hidden="true">↓</span></a></li></ul>
+      <ul class="menu" id="menu"><li class=""><a href="../index.html" data-section="home">Home</a></li><li class="has-sub"><a href="../strengths/" data-section="strengths">Strengths</a><ul class="submenu" aria-label="Strengths pages"><li><a href="../strengths/">All Strengths</a></li><li><a href="../strengths/financial-analysis/">Financial Analysis and FP&amp;A</a></li><li><a href="../strengths/accounting/">Accounting</a></li><li><a href="../strengths/evm/">Earned Value Management (EVM)</a></li><li><a href="../strengths/cost-analysis/">Cost and Variance Analysis</a></li><li><a href="../strengths/government-budgeting/">Government Budgeting</a></li><li><a href="../strengths/python/">Python for Finance</a></li><li><a href="../strengths/data-sql/">Data and SQL</a></li></ul></li><li class="has-sub"><a href="../case-studies/" data-section="cases">Case Studies</a><ul class="submenu" aria-label="Case Studies pages"><li><a href="../case-studies/">All Case Studies</a></li><li><a href="../aldercrest-aerospace/">Aldercrest Aerospace</a></li><li><a href="../lumenpath-software/">Lumenpath Software</a></li><li><a href="../saltbrush-beverage/">Saltbrush Beverage</a></li><li><a href="../sunfield-kitchen/">Sunfield Kitchen</a></li><li><a href="../palomar-vista/">Palomar Vista</a></li><li><a href="../saltbrush-close/">Saltbrush Close</a></li><li><a href="../escentials-llc/">Escentials Financial Statements</a></li></ul></li><li class="has-sub"><a href="../projects/" data-section="projects" aria-current="page">All Projects</a><ul class="submenu" aria-label="All Projects pages"><li><a href="../projects/">All Projects</a></li><li><a href="../escentials/">Escentials</a></li><li><a href="../hirely/">Hirely</a></li><li><a href="../rados/">radOS</a></li><li><a href="../everything-bible/">Everything Bible</a></li><li><a href="../claude-skills/">Claude Skills</a></li><li><a href="../store/">Escentials Website</a></li></ul></li><li class=""><a href="../about/" data-section="about">About</a></li><li class=""><a href="../contact/" data-section="contact">Contact</a></li><li><a class="nav-resume" href="../assets/media/George_Murad_Resume.pdf" download>Resume <span aria-hidden="true">↓</span></a></li></ul>
       <button class="theme-toggle" type="button" aria-label="Switch to dark theme" hidden>Dark</button>
     </nav>
   </div>
 </header>
-<main id="main" tabindex="-1"><div class="wrap">
+<main id="main" tabindex="-1"><div class="wrap project-detail tone-blue" data-project="claude-skills">
   <p class="crumb"><a href="../projects/">All Projects</a> / Claude Skills</p>
-  <header class="cover cover--short">
-    <div>
-      <span class="kicker">Claude Skills</span>
+  <header class="project-hero">
+    <div class="project-hero__copy">
+      <span class="kicker">Free Tools</span>
       <h1>Claude Skills</h1>
-      <p class="intro">Tools I build for Claude Code, Anthropic's coding assistant. Each one is free: read the code, download it, or install it with one command.</p>
+      <p class="intro">Small tools I build for Claude Code, free for anyone to download and use.</p>
+      <p class="project-status">Open source on GitHub</p>
+      <div class="actions"><a class="button" href="https://github.com/gbmurad/claude-skills">View on GitHub <span class="arr" aria-hidden="true">&rarr;</span></a><a class="button button--secondary" href="https://github.com/gbmurad/claude-skills/archive/refs/heads/main.zip">Download ZIP <span class="arr" aria-hidden="true">&rarr;</span></a><a class="button button--secondary" href="#source-title">Read the code <span class="arr" aria-hidden="true">&rarr;</span></a></div>
+      
     </div>
+    <div class="project-hero__visual"><figure class="project-picture"><div class="project-frame project-frame--browser project-code-preview"><div class="project-frame__bar" aria-hidden="true"><i></i><i></i><i></i></div><pre class="proj-code"><code>---
+name: day-to-calendar
+description: Writes a short summary of each day you worked with Claude into its own Apple Calendar, so you can look back and see what happened on any date. Use when the user says log today, add my day to the calendar, backfill my calendar, or what did we do on a past day. macOS only.
+---</code></pre></div><figcaption><b>A skill starts with plain text.</b><span>The actual name and description from the first published skill.</span></figcaption></figure></div>
   </header>
-  <div class="report" style="grid-template-columns:minmax(0,1fr)">
-    <div class="content">
-      <section class="chapter"><div class="section-color" data-parallax aria-hidden="true"></div><div class="shead" data-reveal><span class="kicker">The details</span><h2>How a Skill Works</h2></div>
-        <ol class="findings" data-reveal><li><span><b>Install it.</b> One command copies the skill into Claude Code&#x27;s skills folder, so it works in every project. A ZIP download works too.</span></li><li><span><b>Ask in plain words.</b> Each skill names the requests it answers, so Claude knows when to use it.</span></li><li><span><b>Claude follows the steps.</b> The skill&#x27;s SKILL.md holds the steps, what done means and the guardrails. Its scripts handle what Claude cannot do alone, like asking macOS for permission.</span></li></ol>
-      </section>
-      <div class="skills-stack"><article class="skill" data-reveal>
-  <h2>day-to-calendar</h2>
+  <section class="chapter project-glance" aria-labelledby="glance-title"><div class="section-color" data-parallax aria-hidden="true"></div>
+    <header class="section-heading"><span class="kicker">At a glance</span><h2 id="glance-title">The project, in a few facts.</h2></header>
+    <dl class="project-stats"><div class="project-stat"><dt>published skills</dt><dd>2</dd></div><div class="project-stat"><dt>lines in the first skill</dt><dd>204</dd></div><div class="project-stat"><dt>command to install</dt><dd>1</dd></div><div class="project-stat"><dt>license</dt><dd>MIT</dd></div></dl>
+  </section>
+  <section class="chapter" aria-labelledby="features-title"><div class="section-color" data-parallax aria-hidden="true"></div>
+    <header class="section-heading"><span class="kicker">What it does</span><h2 id="features-title">Small tools, useful jobs.</h2><p>A skill teaches Claude Code, Anthropic&#x27;s coding assistant, a new job: written steps it follows, plus scripts that do the parts it cannot.</p></header>
+    <div class="app-features"><article class="app-feature"><span class="icon-tile" aria-hidden="true">01</span><h3>A new job for Claude Code</h3><p>A skill teaches Claude Code, Anthropic&#x27;s coding assistant, a new job: written steps it follows, plus scripts that do the parts it cannot.</p></article><article class="app-feature"><span class="icon-tile" aria-hidden="true">02</span><h3>Instructions and guardrails</h3><p>Each SKILL.md holds the steps to follow, what done means and the boundaries for the task.</p></article><article class="app-feature"><span class="icon-tile" aria-hidden="true">03</span><h3>Help from the system</h3><p>Helper scripts handle work such as asking macOS for permission.</p></article><article class="app-feature"><span class="icon-tile" aria-hidden="true">04</span><h3>Free to read and change</h3><p>Every skill is public on GitHub under the MIT license, with its README, code and install command shown below.</p></article></div>
+  </section>
+  
+  <section class="chapter" aria-labelledby="flow-title"><div class="section-color" data-parallax aria-hidden="true"></div>
+    <header class="section-heading"><span class="kicker">How it works</span><h2 id="flow-title">From the first step to the next.</h2></header>
+    <ol class="project-flow" style="--flow-count:3"><li><span class="project-flow__number" aria-hidden="true">01</span><div><h3>Install it.</h3><p>One command copies the skill into Claude Code&#x27;s skills folder, so it works in every project. A ZIP download works too.</p></div></li><li><span class="project-flow__number" aria-hidden="true">02</span><div><h3>Ask in plain words.</h3><p>Each skill names the requests it answers, so Claude knows when to use it.</p></div></li><li><span class="project-flow__number" aria-hidden="true">03</span><div><h3>Claude follows the steps.</h3><p>The skill&#x27;s SKILL.md holds the steps, what done means and the guardrails. Its scripts handle what Claude cannot do alone, like asking macOS for permission.</p></div></li></ol>
+    
+    <div class="project-tools"><h3>Built with</h3><ul class="project-tags" aria-label="Tools"><li>Swift</li><li>Shell</li><li>macOS</li><li>Git and GitHub</li><li>Claude Code</li></ul></div>
+  </section>
+  <section class="chapter project-role" aria-labelledby="role-title"><div class="section-color" data-parallax aria-hidden="true"></div><header class="section-heading"><span class="kicker">My part</span><h2 id="role-title">What I bring to it.</h2></header><p>I design each skill: the steps it follows, its guardrails, the helper app and the installer. Then I publish it, free.</p><p class="note">First skill released September 29, 2026. More are on the way.</p><p class="note">Public on GitHub, free for anyone to use, change and share.</p></section>
+  <section class="chapter" aria-labelledby="source-title"><div class="section-color" data-parallax aria-hidden="true"></div><header class="section-heading"><span class="kicker">Read it. Use it. Change it.</span><h2 id="source-title">The skills and their code.</h2></header><div class="skills-stack"><article class="skill" data-reveal>
+  <h3><code>day-to-calendar</code></h3>
   <p class="skill__text">Writes a short summary of each day you worked with Claude into its own Apple Calendar, so you can look back and see what happened on any date. Use when the user says log today, add my day to the calendar, backfill my calendar, or what did we do on a past day. macOS only.</p>
-  <h3>Install</h3>
+  <h4>Install</h4>
   <div class="install"><code>git clone https://github.com/gbmurad/claude-skills.git &amp;&amp; cd claude-skills &amp;&amp; sh install.sh day-to-calendar</code><button class="copy" type="button" data-copy="git clone https://github.com/gbmurad/claude-skills.git &amp;&amp; cd claude-skills &amp;&amp; sh install.sh day-to-calendar">Copy</button></div>
   <p class="skill__links"><a class="button" href="https://github.com/gbmurad/claude-skills/archive/refs/heads/main.zip" rel="noopener">Download ZIP</a>
   <a class="link" href="https://github.com/gbmurad/claude-skills/tree/main/skills/day-to-calendar" rel="noopener">View on GitHub <span class="arr" aria-hidden="true">&rarr;</span></a></p>
   <div class="skill__readme"><p>A Claude Code skill that writes a short summary of each day you worked into its own Apple Calendar, so you can look back and see what happened on any date.</p>
 <p>Ask &quot;log today to my calendar&quot; and Claude drafts a title and a few sentences for the day, shows you, and on your yes adds it as an all day event in a separate calendar called <b>Workday Log</b>. It can also backfill past days from your git history.</p>
-<h3>What you need</h3>
+<h4>What you need</h4>
 <ul><li>A Mac on macOS 14 or newer</li><li>Xcode Command Line Tools (<code>xcode-select --install</code>)</li><li>Claude Code</li></ul>
-<h3>Safety</h3>
+<h4>Safety</h4>
 <ul><li>Events go only into the &quot;Workday Log&quot; calendar. Your own calendars are never touched.</li><li>Claude shows you every event before writing it.</li><li>Running it twice does not duplicate events.</li><li>To remove everything, delete the &quot;Workday Log&quot; calendar in the Calendar app.</li><li>The calendar syncs to iCloud, so the skill tells Claude to leave out secrets and private details.</li></ul>
-<h3>Setup</h3>
+<h4>Setup</h4>
 <p><code>install.sh</code> asks a few quick questions (press Enter to keep the default). If you skip them, Claude asks on first use. Rerun <code>sh ~/.claude/skills/day-to-calendar/scripts/setup.sh</code> any time to change them.</p>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Question</th><th scope="col">Default</th><th scope="col">Notes</th></tr></thead><tbody><tr><td>Calendar name</td><td>Workday Log</td><td>The separate calendar events go into</td></tr><tr><td>Color</td><td>teal</td><td>A name (red, orange, yellow, green, teal, blue, purple, pink, brown, gray) or a hex like <code>#1A73E8</code></td></tr><tr><td>Event length</td><td>all day</td><td>Or a number of minutes; then you also pick a start time</td></tr><tr><td>Longest title</td><td>8 words</td><td>Claude keeps titles within this</td></tr><tr><td>Longest note</td><td>4 sentences</td><td>Claude keeps notes within this</td></tr></tbody></table></div>
 <p>Answers are saved in <code>~/.config/day-to-calendar/config.json</code>, which you can also edit by hand. Changing the color updates the existing calendar the next time it runs.</p>
-<h3>Why it ships its own tiny app</h3>
+<h4>Why it ships its own tiny app</h4>
 <p>macOS only shows the calendar permission prompt to an app that declares why it wants access. Claude&#x27;s app does not, so the request fails silently. <code>DayCal.app</code> is built on your Mac from <code>scripts/daycal.swift</code>, carries the declaration, and is the only thing that touches your calendar. Read the source; it is about 80 lines.</p></div>
-  <h3>How it is made</h3>
+  <h4>How it is made</h4>
   <p class="skill__count">5 files, 204 lines in all. Every one is below.</p>
   <details class="skill__fold" open><summary>Show SKILL.md</summary><pre class="skill-code" tabindex="0"><code>---
 name: day-to-calendar
@@ -109,7 +127,7 @@ description: Writes a short summary of each day you worked with Claude into its 
 ## Related
 The helper source is `scripts/daycal.swift`. Rebuild with `sh scripts/make-app.sh` after editing it.
 </code></pre></details>
-  <details class="skill__fold"><summary>Show daycal.sh</summary><pre class="skill-code" tabindex="0"><code>#!/bin/sh
+  <details class="skill__fold"><summary>Show <code>daycal.sh</code></summary><pre class="skill-code" tabindex="0"><code>#!/bin/sh
 # daycal.sh &lt;status|request|add events.json&gt;: runs DayCal.app as its own process (so macOS asks and
 # remembers calendar access for it, not for whoever called it) and prints what it said.
 # Set DAYCAL_CALENDAR to change the calendar name (default &quot;Workday Log&quot;).
@@ -121,7 +139,7 @@ open -W -n --stdout &quot;$out&quot; --stderr &quot;$err&quot; ${DAYCAL_CALENDAR
 # open -W cannot always track a background app, so also wait for the process to finish (up to 15 minutes)
 i=0; while pgrep -qf &quot;DayCal.app/Contents/MacOS/DayCal&quot; &amp;&amp; [ $i -lt 4500 ]; do sleep 0.2; i=$((i+1)); done
 cat &quot;$out&quot; &quot;$err&quot;; rm -f &quot;$out&quot; &quot;$err&quot;
-</code></pre></details><details class="skill__fold"><summary>Show daycal.swift</summary><pre class="skill-code" tabindex="0"><code>// daycal.swift: writes one all day event per worked day into a dedicated Apple Calendar, through EventKit.
+</code></pre></details><details class="skill__fold"><summary>Show <code>daycal.swift</code></summary><pre class="skill-code" tabindex="0"><code>// daycal.swift: writes one all day event per worked day into a dedicated Apple Calendar, through EventKit.
 //   daycal status              -&gt; the calendar access macOS has granted
 //   daycal request             -&gt; asks macOS for full calendar access (click Allow once)
 //   daycal add &lt;events.json&gt;   -&gt; writes the events, skipping any with the same title on the same day
@@ -225,7 +243,7 @@ if cmd == &quot;status&quot; {
 } else {
     print(&quot;unknown command \(cmd); use status, request or add &lt;events.json&gt;&quot;); exit(1)
 }
-</code></pre></details><details class="skill__fold"><summary>Show make-app.sh</summary><pre class="skill-code" tabindex="0"><code>#!/bin/sh
+</code></pre></details><details class="skill__fold"><summary>Show <code>make-app.sh</code></summary><pre class="skill-code" tabindex="0"><code>#!/bin/sh
 # make-app.sh: builds DayCal.app from daycal.swift. Claude&#x27;s own app cannot ask macOS for calendar access
 # (no calendar usage line in its Info.plist, so macOS refuses without ever showing a prompt), so the tool
 # runs as its own tiny app that carries the line. Click Allow once; the grant is tied to this build&#x27;s
@@ -253,7 +271,7 @@ cat &gt; &quot;$app/Contents/Info.plist&quot; &lt;&lt;PLIST
 PLIST
 codesign --force -s - &quot;$app&quot;
 echo &quot;built $app&quot;
-</code></pre></details><details class="skill__fold"><summary>Show setup.sh</summary><pre class="skill-code" tabindex="0"><code>#!/bin/sh
+</code></pre></details><details class="skill__fold"><summary>Show <code>setup.sh</code></summary><pre class="skill-code" tabindex="0"><code>#!/bin/sh
 # setup.sh: asks a few questions and saves your answers to ~/.config/day-to-calendar/config.json.
 # Press Enter to accept the value in [brackets]. Run it again any time to change your answers.
 dir=&quot;$HOME/.config/day-to-calendar&quot;; mkdir -p &quot;$dir&quot;
@@ -280,9 +298,9 @@ JSON
 echo &quot;Saved to $dir/config.json&quot; &gt;&amp;2
 </code></pre></details>
 </article><article class="skill" data-reveal>
-  <h2>gavel</h2>
+  <h3><code>gavel</code></h3>
   <p class="skill__text">Puts a decision on trial. A defense and a prosecution argue it, 3 to 8 specialist jurors vote alone without seeing each other, and a judge who commits to his own view first rules on the evidence. Setup picks the opposition&#x27;s harshness, the jury, and each role&#x27;s model. Use when the user says use gavel, gavel this, put it on trial, should we do X.</p>
-  <h3>Install</h3>
+  <h4>Install</h4>
   <div class="install"><code>git clone https://github.com/gbmurad/claude-skills.git &amp;&amp; cd claude-skills &amp;&amp; sh install.sh gavel</code><button class="copy" type="button" data-copy="git clone https://github.com/gbmurad/claude-skills.git &amp;&amp; cd claude-skills &amp;&amp; sh install.sh gavel">Copy</button></div>
   <p class="skill__links"><a class="button" href="https://github.com/gbmurad/claude-skills/archive/refs/heads/main.zip" rel="noopener">Download ZIP</a>
   <a class="link" href="https://github.com/gbmurad/claude-skills/tree/main/skills/gavel" rel="noopener">View on GitHub <span class="arr" aria-hidden="true">&rarr;</span></a></p>
@@ -290,10 +308,10 @@ echo &quot;Saved to $dir/config.json&quot; &gt;&amp;2
 <p>Gavel is a <a href="https://claude.com/claude-code" rel="noopener">Claude Code</a> skill that turns a hard question (&quot;should we rebuild the app?&quot;, &quot;should I take this deal?&quot;, &quot;should the store offer free shipping?&quot;) into a structured trial. A defense argues for it. A prosecution argues against it and has to name a better plan. A jury of 3 to 8 specialists, each with a different lens, votes alone without seeing the others. Then a judge, who wrote down his own view before hearing a word, weighs the evidence and rules.</p>
 <p>You get one of five verdicts (Adopt, Adopt with conditions, Redesign, Reject, Insufficient evidence), the reasons, the strongest dissent, and the one fact that would flip the ruling.</p>
 <pre class="skill-code"><code>you: use gavel for this: should we move the store to a subscription model?</code></pre>
-<h3>Why a trial</h3>
+<h4>Why a trial</h4>
 <p>Ask one chatbot whether your idea is good and it tends to agree with you. Ask a panel of them to discuss it and they tend to agree with each other: research on debates between language models finds they drop correct answers just to reach consensus. Neither gives you what a hard decision needs, which is the strongest case on both sides, judged by someone who is not trying to please anyone.</p>
 <p>A courtroom is an old answer to that problem. Gavel keeps the parts of it that are backed by research and drops the theater. Every rule below exists because a study found that groups, juries or panels of models go wrong without it (see <a href="https://github.com/gbmurad/claude-skills/blob/main/skills/gavel/#the-rules-that-keep-it-honest" rel="noopener">Why each rule exists</a>).</p>
-<h3>What happens when you run it</h3>
+<h4>What happens when you run it</h4>
 <pre class="skill-code"><code> Setup         you pick the question, how hard the prosecution pushes, the jury, and each role&#x27;s model
    │
  Filing        the clerk writes the case file: facts with sources, constraints, stakes
@@ -313,12 +331,12 @@ echo &quot;Saved to $dir/config.json&quot; &gt;&amp;2
    │
  Ruling        the judge returns fresh, opens his sealed opinion, weighs the evidence, and rules</code></pre>
 <p>Each role is a separate Claude subagent with a clean memory, so nobody can be swayed by what they were not supposed to see. The main conversation acts as the <b>clerk</b>: it runs the setup, passes files between roles, and reports the ruling, but it never argues, votes or edits anything a role wrote.</p>
-<h3>The setup</h3>
+<h4>The setup</h4>
 <p>When you say &quot;use Gavel for this&quot;, the skill asks a few questions with tap to choose menus.</p>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Question</th><th scope="col">Choices</th><th scope="col">Default</th></tr></thead><tbody><tr><td>The question</td><td>You type it in one sentence</td><td></td></tr><tr><td>How hard should the prosecution push?</td><td>Fair · Tough · Ruthless</td><td>Tough</td></tr><tr><td>Who sits on the jury?</td><td>The judge picks · I&#x27;ll choose the seats · Quick trial (3 seats, no rebuttals)</td><td>Judge picks 5</td></tr><tr><td>Model for the judge</td><td>Opus · Fable · Sonnet · Same as this chat</td><td>Opus</td></tr><tr><td>Model for the defense</td><td>Sonnet · Opus · Fable · Haiku</td><td>Sonnet</td></tr><tr><td>Model for the prosecution</td><td>Sonnet · Opus · Fable · Haiku</td><td>Sonnet</td></tr><tr><td>Default model for the jury</td><td>Sonnet · Haiku · Opus · Fable</td><td>Sonnet</td></tr></tbody></table></div>
 <p>If you choose the seats, you pick from the bench below or type anyone you like, such as &quot;a retired airline pilot&quot; or &quot;my most demanding customer&quot;. Any seat can get its own model by adding it after a colon, like <code>designer: opus</code>. The premortem seat always sits.</p>
 <p>Gavel remembers your last setup. Next time, say &quot;use my last settings&quot; and it skips the menus.</p>
-<h3>The courtroom, role by role</h3>
+<h4>The courtroom, role by role</h4>
 <p>### The judge There is one judge, and he sits twice: once before the trial and once to rule. Only the second sitting decides, so two judges can never disagree. Each sitting is a fresh subagent on the model you chose (Opus by default, because the ruling is the product); research found a judge brought in fresh at the end resists the biases that build up over a long debate better than one who sat through every round.</p>
 <p><b>Pretrial.</b> Before any argument, the judge reads only the case file and: 1. Sharpens your question into one testable motion (&quot;Resolved: the store should move to a subscription model&quot;). 2. Writes 3 to 5 competing explanations of what is true, including the motion, a rival plan or doing nothing,    and one nobody has raised yet. 3. Sets 2 to 4 weighted criteria the decision should turn on (cost, risk, customer value, and so on). 4. Seats the jury: your chosen seats, or the specialists this case needs, each with its own question. 5. Sets the standard of proof (below). 6. Writes a <b>sealed prior</b>: his honest opinion and a probability, before hearing anyone. Nobody else reads it.</p>
 <p><b>Ruling.</b> The judge comes back with a fresh memory, opens his own sealed prior, reads the record and the jury&#x27;s ballots, and rules. He must show how far the trial moved him from his first opinion. He may overrule the jury, but only by explaining why in writing, and the jury&#x27;s vote is printed under his ruling either way.</p>
@@ -331,13 +349,13 @@ echo &quot;Saved to $dir/config.json&quot; &gt;&amp;2
 <p><b>The bench</b> (the judge picks from these, or invents a seat; you can type anyone):</p>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Seat</th><th scope="col">The question it owns</th></tr></thead><tbody><tr><td>premortem (always)</td><td>It is a year from now and this failed. What were the three most likely reasons?</td></tr><tr><td>engineer</td><td>Can this be built and run as described? What breaks first?</td></tr><tr><td>designer</td><td>Will the people it is for understand it and use it without help?</td></tr><tr><td>finance</td><td>What does it cost in total, what does it return, and when does it pay back?</td></tr><tr><td>customer</td><td>Would I pay for it or change what I do for it?</td></tr><tr><td>operations</td><td>Who runs this every day, and what does it add to their load?</td></tr><tr><td>security and privacy</td><td>What could leak, be abused, or put someone at risk?</td></tr><tr><td>legal and compliance</td><td>Which rule, contract or policy does this touch?</td></tr><tr><td>data</td><td>Does the evidence in the record actually show what it claims?</td></tr><tr><td>competitor</td><td>If I were the strongest rival, how would I answer this, and how fast?</td></tr><tr><td>domain expert</td><td>What does someone who has done this for ten years know that the record misses?</td></tr><tr><td>ethicist</td><td>Who is affected who is not in the room, and is that fair to them?</td></tr><tr><td>skeptical investor</td><td>Why now, and what has to go right that nobody has proven?</td></tr><tr><td>first time user</td><td>Coming in cold, where do I get stuck?</td></tr><tr><td>maintainer</td><td>In two years, who keeps this alive, and what does it cost to change?</td></tr></tbody></table></div>
 <p>### Deliberation (optional) With <code>--deliberate</code>, jurors get one look at the other ballots, shown as Juror A, B, C in random order, and may revise once. Anyone who changes their verdict, or moves more than 15 points, must name the new point that moved them. If most changes name nothing new, or everyone simply drifts toward the majority, the script throws the second round out and the judge gets the blind vote instead.</p>
-<h3>The verdict</h3>
+<h4>The verdict</h4>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Verdict</th><th scope="col">Means</th></tr></thead><tbody><tr><td>Adopt</td><td>Do it as stated</td></tr><tr><td>Adopt with conditions</td><td>Do it, provided the listed conditions are met</td></tr><tr><td>Redesign</td><td>The goal is right, the plan is not; rework it</td></tr><tr><td>Reject</td><td>Do not do it; the rival plan or doing nothing is better</td></tr><tr><td>Insufficient evidence</td><td>The record cannot support a decision yet; here is what to find out</td></tr></tbody></table></div>
 <p><b>Standard of proof.</b> The burden is always on the defense: the idea has to earn its adoption. The judge sets the bar by how hard the decision is to undo. Cheap to reverse: *more likely than not*. Costly or hard to undo: *clear and convincing*.</p>
 <p>The ruling file always has the same sections: the verdict line, the ruling in plain words, how far the judge moved from his sealed prior, the decisive evidence, the strongest dissent stated fairly, conditions, the one fact that would flip the ruling, two or three things to watch, and the vote.</p>
-<h3>The rules that keep it honest</h3>
+<h4>The rules that keep it honest</h4>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Rule</th><th scope="col">What it prevents</th><th scope="col">Research</th></tr></thead><tbody><tr><td>Jurors vote alone before seeing anyone</td><td>Agents abandon correct answers to agree; social influence narrows opinions without making them more accurate</td><td>Wynn et al. 2025, <a href="https://arxiv.org/abs/2509.05396" rel="noopener">arXiv 2509.05396</a>; Lorenz et al. 2011, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3107299" rel="noopener">PNAS</a></td></tr><tr><td>Second round is optional, anonymized, and dropped if moves name no new point</td><td>Sycophancy toward peers is far more common than self bias</td><td>Choi et al. 2025, <a href="https://arxiv.org/abs/2510.07517" rel="noopener">arXiv 2510.07517</a>; <a href="https://arxiv.org/abs/2604.02668" rel="noopener">arXiv 2604.02668</a></td></tr><tr><td>At most two rounds of argument</td><td>Judge biases rise sharply after the first round</td><td>Ma et al. 2025, <a href="https://arxiv.org/abs/2505.19477" rel="noopener">arXiv 2505.19477</a></td></tr><tr><td>Equal word limits, sides in random order</td><td>Judges favor longer answers and the first or last speaker</td><td>Khan et al. 2024, <a href="https://arxiv.org/abs/2402.06782" rel="noopener">arXiv 2402.06782</a></td></tr><tr><td>Always two sides</td><td>Debate beat a lone advocate on every task tested, and lifted weak judges from 48% to 76% accuracy</td><td>Kenton et al. 2024, <a href="https://arxiv.org/abs/2407.04622" rel="noopener">arXiv 2407.04622</a>; Khan et al. 2024</td></tr><tr><td>The prosecution must argue a real rival</td><td>Assigned devil&#x27;s advocacy is weaker than real dissent</td><td>Nemeth, Brown, Rogers 2001; Schweiger, Sandberg, Ragan 1986</td></tr><tr><td>Judge seals his own view and lists competing explanations first</td><td>Anchoring on the first strong speaker</td><td>Heuer, *Psychology of Intelligence Analysis* (Analysis of Competing Hypotheses); Kahneman, Sibony, Lovallo (Mediating Assessments Protocol)</td></tr><tr><td>A premortem seat on every jury</td><td>Doubters stay quiet when a plan has momentum</td><td>Klein 2007, *Performing a Project Premortem*, HBR</td></tr><tr><td>Facts before votes, every finding graded</td><td>Juries that vote first cover less of the evidence</td><td>Hastie, Penrod, Pennington 1983, *Inside the Jury*</td></tr><tr><td>Evidence over headcount; the minority is always reported</td><td>Jurors on one model share blind spots; in about one in four split cases the minority was right</td><td>He et al. 2026, <a href="https://arxiv.org/abs/2606.29270" rel="noopener">arXiv 2606.29270</a></td></tr><tr><td>Probability and confidence per juror</td><td>A bare yes or no loses how sure each juror is</td><td>Mellers et al. 2014; Satopää et al. 2014</td></tr><tr><td>Checkable questions are sent elsewhere</td><td>On questions with a right answer, a simple vote explains most of the gain from debate</td><td>Choi et al. 2025, *Debate or Vote*, <a href="https://arxiv.org/abs/2508.17536" rel="noopener">arXiv 2508.17536</a></td></tr></tbody></table></div>
-<h3>The script that keeps it fair</h3>
+<h4>The script that keeps it fair</h4>
 <p>The steps that should never depend on judgment are done by <code>scripts/gavel.py</code>, plain Python with no dependencies:</p>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>gavel.py new &quot;&lt;question&gt;&quot; [flags]</code></td><td>Checks the setup, opens the case folder, saves your settings, prints the plan</td></tr><tr><td><code>gavel.py settings</code></td><td>Shows your last setup</td></tr><tr><td><code>gavel.py pretrial CASE</code></td><td>Checks the judge&#x27;s pretrial plan, including that he seated exactly the jury you chose</td></tr><tr><td><code>gavel.py record CASE</code></td><td>Refuses speeches over the word limit, randomizes which side appears first, never includes the sealed prior</td></tr><tr><td><code>gavel.py tally CASE</code></td><td>Checks every ballot, computes the median and spread, flags a strong minority, audits second round changes, and shuffles the ballots under letters for the judge</td></tr><tr><td><code>gavel.py close CASE</code></td><td>Refuses a ruling that is missing its verdict line or any section, then adds it to the docket</td></tr><tr><td><code>gavel.py list</code></td><td>Every past case and its verdict</td></tr></tbody></table></div>
 <p><code>scripts/test_gavel.py</code> holds 27 tests, including deliberately broken ballots, speeches over the limit, a herding second round, and a leaked sealed prior. Run them with <code>python3 scripts/test_gavel.py</code>.</p>
@@ -355,21 +373,21 @@ echo &quot;Saved to $dir/config.json&quot; &gt;&amp;2
   jury-packet.md      the ballots as the judge sees them
   ruling.md           the ruling</code></pre>
 <p>Case files can hold private details, so add <code>.gavel/</code> to your <code>.gitignore</code>.</p>
-<h3>Options</h3>
+<h4>Options</h4>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Option</th><th scope="col">Effect</th></tr></thead><tbody><tr><td><code>--last</code></td><td>Reuse your last setup</td></tr><tr><td><code>--quick</code></td><td>3 jurors and no rebuttals</td></tr><tr><td><code>--deliberate</code></td><td>One anonymized second round for the jury, with the herding check</td></tr><tr><td><code>--research</code></td><td>Both sides may search the web; every web claim needs its link</td></tr></tbody></table></div>
-<h3>Cost</h3>
+<h4>Cost</h4>
 <p>A trial is a lot of agent runs, so it is meant for real decisions, not quick questions.</p>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">Trial</th><th scope="col">Runs</th></tr></thead><tbody><tr><td>Quick</td><td>2 judge + 2 speeches + 3 jurors = 7</td></tr><tr><td>Standard</td><td>2 judge + 4 speeches + 5 jurors = 11</td></tr><tr><td>Standard with deliberation</td><td>16</td></tr></tbody></table></div>
 <p>Cheaper models for the jury (Haiku) cut most of the cost. The judge is the one seat worth paying for.</p>
-<h3>Limits, honestly</h3>
+<h4>Limits, honestly</h4>
 <ul><li>Every juror is a Claude model, so they share blind spots. Mixing models helps a little; it does not make</li></ul>
 <p>  them independent. The ruling says how varied the jury was.</p>
 <ul><li>No study has tested a full courtroom like this one. Each rule is grounded in research; the whole is a design.</li><li>Nothing makes a judge immune to a persuasive argument. Word limits, random order, a sealed prior and graded</li></ul>
 <p>  evidence reduce the known biases; they do not remove them.</p>
 <ul><li>For a question with a right answer (a bug, a fact, a calculation), a trial is the wrong tool. Gavel says so.</li></ul>
-<h3>Files</h3>
+<h4>Files</h4>
 <div class="fin-wrap"><table class="fin md-table"><thead><tr><th scope="col">File</th><th scope="col">What it is</th></tr></thead><tbody><tr><td><code>SKILL.md</code></td><td>The clerk&#x27;s procedure Claude follows</td></tr><tr><td><code>references/roles.md</code></td><td>The exact brief each role receives</td></tr><tr><td><code>references/bench.md</code></td><td>The juror seats and their questions</td></tr><tr><td><code>references/research.md</code></td><td>The evidence behind each rule</td></tr><tr><td><code>scripts/gavel.py</code></td><td>Case folders, word limits, ballot checks, the tally, the docket</td></tr><tr><td><code>scripts/test_gavel.py</code></td><td>The tests</td></tr></tbody></table></div></div>
-  <h3>How it is made</h3>
+  <h4>How it is made</h4>
   <p class="skill__count">3 files, 962 lines in all. Every one is below.</p>
   <details class="skill__fold" open><summary>Show SKILL.md</summary><pre class="skill-code" tabindex="0"><code>---
 name: gavel
@@ -450,7 +468,7 @@ exists: `references/research.md`. `&lt;skill&gt;` below is this skill&#x27;s fol
 `references/roles.md` · `references/bench.md` · `references/research.md` · `scripts/gavel.py` ·
 `scripts/test_gavel.py`
 </code></pre></details>
-  <details class="skill__fold"><summary>Show gavel.py</summary><pre class="skill-code" tabindex="0"><code>#!/usr/bin/env python3
+  <details class="skill__fold"><summary>Show <code>gavel.py</code></summary><pre class="skill-code" tabindex="0"><code>#!/usr/bin/env python3
 &quot;&quot;&quot;gavel.py: the parts of a Gavel case that should never be left to judgment. Standard library only.
 
     python3 gavel.py new &quot;&lt;motion&gt;&quot; [setup flags]  open a case folder with its setup; print the path and the plan
@@ -1045,7 +1063,7 @@ def main(argv=None):
 
 if __name__ == &quot;__main__&quot;:
     sys.exit(main())
-</code></pre></details><details class="skill__fold"><summary>Show test_gavel.py</summary><pre class="skill-code" tabindex="0"><code>#!/usr/bin/env python3
+</code></pre></details><details class="skill__fold"><summary>Show <code>test_gavel.py</code></summary><pre class="skill-code" tabindex="0"><code>#!/usr/bin/env python3
 &quot;&quot;&quot;Tests for gavel.py. Run: python3 test_gavel.py   (standard library only, no network, temp folders only)&quot;&quot;&quot;
 import contextlib
 import io
@@ -1335,11 +1353,14 @@ class TestClose(CaseTest):
 if __name__ == &quot;__main__&quot;:
     unittest.main(verbosity=1)
 </code></pre></details>
-</article></div>
-    </div>
-  </div>
-  <a class="next-case" href="../everything-bible/"><span>Next</span><b>Everything Bible &rarr;</b></a>
-</div></main>
+</article></div></section>
+  <nav class="project-pagination" aria-label="More projects">
+    <a class="biz-card" href="../everything-bible/"><small>Previous project</small><b>Everything Bible</b><span class="arr" aria-hidden="true">←</span></a>
+    <a class="project-pagination__all" href="../projects/">All Projects</a>
+    <a class="biz-card" href="../escentials/"><small>Next project</small><b>Escentials</b><span class="arr" aria-hidden="true">→</span></a>
+  </nav>
+</div>
+</main>
 <div class="footer-scene"><footer class="foot" id="contact" data-nav-section="contact">
   <div class="wrap">
     <div class="foot__grid">
