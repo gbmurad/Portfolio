@@ -512,3 +512,7 @@ body::before { content:""; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
 .section--band, .section--panel { background:transparent; }
 /* Phone gallery pictures sit off screen sideways until swiped, so they never wait on a scroll reveal. */
 .js .phone-gallery figure.reveal-pending { opacity:1; transform:none; animation:none; }
+/* Resume skills as chips under small labels (George 2026-10-30: clean it up). */
+.skills dt { font-size:var(--small); font-weight:600; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; }
+.skills dd { margin:0; } .skills .skills-list { margin-top:12px; }
+.resume__sec>p { margin:0; color:var(--soft); max-width:68ch; }

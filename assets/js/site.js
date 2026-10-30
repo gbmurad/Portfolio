@@ -343,17 +343,32 @@
   const observeNavigation = (sections, links, key, current) => {
     if (!sections.length || !("IntersectionObserver" in window)) return;
     const visible = new Set();
+    const last = sections[sections.length - 1];
+    let lastShown = false, clicked = null, clickTimer;
+    const mark = target => links.forEach(link => {
+      if (current(link) === target) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+    // The last section (the footer) is too short to ever reach the top band, so once most of it is on screen it
+    // wins. A click marks its own link at once and holds it while the page glides there.
+    const update = () => {
+      if (clicked) return mark(clicked);
+      if (lastShown) return mark(key(last));
+      // The newest section to reach the top band wins, so the one you just arrived at lights up.
+      const latest = sections.filter(section => visible.has(section)).pop();
+      if (latest) mark(key(latest));
+    };
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => { if (entry.isIntersecting) visible.add(entry.target); else visible.delete(entry.target); });
-      const first = sections.find(section => visible.has(section));
-      if (!first) return;
-      const target = key(first);
-      links.forEach(link => {
-        if (current(link) === target) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
-      });
+      update();
     }, { rootMargin: "-80px 0px -55% 0px", threshold: 0 });
     sections.forEach(section => observer.observe(section));
+    new IntersectionObserver(entries => { lastShown = entries[0].intersectionRatio >= .6 || entries[0].intersectionRect.bottom >= innerHeight - 2 && entries[0].isIntersecting && entries[0].boundingClientRect.bottom <= innerHeight + 2; update(); },
+      { threshold: [0, .3, .6, 1] }).observe(last);
+    links.forEach(link => link.addEventListener("click", () => {
+      clicked = current(link); clearTimeout(clickTimer); update();
+      clickTimer = setTimeout(() => { clicked = null; update(); }, 1200);
+    }));
   };
   if (document.body.classList.contains("page-home")) {
     observeNavigation(qa("[data-nav-section]"), qa("[data-section]"), section => section.dataset.navSection, link => link.dataset.section);
