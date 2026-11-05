@@ -605,3 +605,10 @@ body::before { content:""; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
   .project-pagination { grid-template-columns:minmax(0,1fr); gap:16px; }
   .project-pagination__all { grid-row:3; }
 }
+
+/* A picture with a dark version: the site's mode decides which one shows. */
+:root .theme-only--dark { display:none; }
+:root[data-theme="dark"] .theme-only--light { display:none; }
+:root[data-theme="dark"] .theme-only--dark { display:block; }
+.project-gallery--phone { justify-content:safe center; }
+.project-single .project-picture { max-width:980px; margin-inline:auto; }
