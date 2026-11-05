@@ -333,7 +333,7 @@ dt { color:var(--muted); font-size:var(--small); } dd { margin:8px 0 0; overflow
 .app-store-badge b { display:block; font-size:var(--lead); line-height:1.2; font-weight:600; letter-spacing:-.02em; }
 @media(hover:hover) and (prefers-reduced-motion:no-preference) { .app-store-badge:hover { transform:translateY(-4px); } }
 .cover .project-tags { margin-top:24px; }
-.product-card__image>.app-store-picture { width:auto; height:100%; max-width:100%; aspect-ratio:1320/2868; }
+:is(.product-card__image,.product-teaser__image)>.app-store-picture { width:auto; height:100%; max-width:100%; aspect-ratio:1320/2868; }
 #everything-bible .product-card__image { aspect-ratio:4/3; }
 .skills-stack { display:grid; gap:64px; } .skill { min-width:0; padding-bottom:40px; border-bottom:1px solid var(--rule); } .skill h3 { margin-top:32px; }
 .skill__text,.skill__count,.skill__readme p,.skill__readme ul { margin-top:16px; color:var(--soft); }
